@@ -14,7 +14,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ imgSrc, title, price, width, 
       <div className="text-black text-base font-medium">{price}</div>
       <div className="text-black text-sm font-medium">{title}</div>
       <div className="w-full h-[26px] bg-[#fe562d]/20 rounded-[20px] flex items-center justify-center mt-2">
-        <span className="text-black text-sm font-medium">Chọn</span>
+        <button className="text-black text-sm font-medium">Chọn</button>
       </div>
     </div>
   </div>
