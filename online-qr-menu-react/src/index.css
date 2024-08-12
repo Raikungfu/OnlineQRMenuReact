@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    @keyframes scrollLeft {
+        0% {
+            transform: translateX(0);
+        }
+
+        100% {
+            transform: translateX(calc(-100% + 100vw));
+        }
+    }
+
+    .animate-scroll-left {
+        animation: scrollLeft 10s linear infinite;
+    }
+}
