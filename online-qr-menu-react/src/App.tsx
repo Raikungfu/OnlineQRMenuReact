@@ -6,7 +6,7 @@ import Page404 from './Page/Error/Page404';
 const App = () => {
   return (
     <Routes>
-      <Route path="/:id" element={<Landing />}>
+      <Route path="/menu/:id" element={<Landing />}>
         <Route index element={<Home />} />
       </Route>
       <Route path="*" element={<Page404 />} />
