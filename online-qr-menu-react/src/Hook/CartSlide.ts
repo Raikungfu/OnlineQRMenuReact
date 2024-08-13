@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface CartItem {
   productId: number;
+  productName: string;
   quantity: number;
-  sizes: { size: string; price: number }[];
+  sizes: { size: string; }[];
   iceOptions: { option: string }[];
   note: string;
+  price: number;
 }
 
 interface CartState {

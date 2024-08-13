@@ -14,7 +14,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ imgSrc, title, price, width, 
   const navigate = useNavigate();
 
   const handleSelect = () => {
-    navigate(`ProductDetail/${productId}`);
+    navigate(`product-detail/${productId}`);
   };
 
   return (

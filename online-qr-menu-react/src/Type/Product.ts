@@ -1,5 +1,6 @@
 export interface Product {
-    id: number;
+    $id: string,
+    menuItemId: number;
     name: string;
     image: string;
     description?: string;
@@ -9,4 +10,3 @@ export interface Product {
     coffeeShopId: number;
     categoryId: number;
   }
-  

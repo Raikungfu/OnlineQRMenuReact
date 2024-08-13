@@ -27,140 +27,7 @@ const fakeCategories: Category[] = [
   { id: 81, name: "Cappuccino", image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg" },
 ];
 
-const fakeProducts: Product[] = [
-    {
-      id: 1,
-      name: "Espresso Single",
-      image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-      description: "A strong and rich espresso shot.",
-      price: 2.99,
-      size: "Small",
-      type: "Coffee",
-      coffeeShopId: 1,
-      categoryId: 1,
-    },
-    {
-      id: 2,
-      name: "Cappuccino",
-      image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-      description: "Creamy and frothy cappuccino.",
-      price: 3.99,
-      size: "Medium",
-      type: "Coffee",
-      coffeeShopId: 1,
-      categoryId: 2,
-    },
-    {
-      id: 3,
-      name: "Latte",
-      image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-      description: "Smooth and milky latte.",
-      price: 4.49,
-      size: "Large",
-      type: "Coffee",
-      coffeeShopId: 2,
-      categoryId: 3,
-    },
-    {
-        id: 4,
-        name: "Espresso Single",
-        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-        description: "A strong and rich espresso shot.",
-        price: 2.99,
-        size: "Small",
-        type: "Coffee",
-        coffeeShopId: 1,
-        categoryId: 1,
-      },
-      {
-        id: 5,
-        name: "Cappuccino",
-        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-        description: "Creamy and frothy cappuccino.",
-        price: 3.99,
-        size: "Medium",
-        type: "Coffee",
-        coffeeShopId: 1,
-        categoryId: 2,
-      },
-      {
-        id: 6,
-        name: "Latte",
-        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-        description: "Smooth and milky latte.",
-        price: 4.49,
-        size: "Large",
-        type: "Coffee",
-        coffeeShopId: 2,
-        categoryId: 3,
-      },
-      {
-        id: 7,
-        name: "Espresso Single",
-        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-        description: "A strong and rich espresso shot.",
-        price: 2.99,
-        size: "Small",
-        type: "Coffee",
-        coffeeShopId: 1,
-        categoryId: 1,
-      },
-      {
-        id: 8,
-        name: "Cappuccino",
-        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-        description: "Creamy and frothy cappuccino.",
-        price: 3.99,
-        size: "Medium",
-        type: "Coffee",
-        coffeeShopId: 1,
-        categoryId: 2,
-      },
-      {
-        id: 9,
-        name: "Latte",
-        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-        description: "Smooth and milky latte.",
-        price: 4.49,
-        size: "Large",
-        type: "Coffee",
-        coffeeShopId: 2,
-        categoryId: 3,
-      },
-      {
-        id: 10,
-        name: "Espresso Single",
-        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-        description: "A strong and rich espresso shot.",
-        price: 2.99,
-        size: "Small",
-        type: "Coffee",
-        coffeeShopId: 1,
-        categoryId: 1,
-      },
-      {
-        id: 11,
-        name: "Cappuccino",
-        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-        description: "Creamy and frothy cappuccino.",
-        price: 3.99,
-        size: "Medium",
-        type: "Coffee",
-        coffeeShopId: 1,
-        categoryId: 2,
-      },
-      {
-        id: 12,
-        name: "Latte",
-        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-        description: "Smooth and milky latte.",
-        price: 4.49,
-        size: "Large",
-        type: "Coffee",
-        coffeeShopId: 2,
-        categoryId: 3,
-      },
-  ];  
+const fakeProducts: Product[] = [];  
 
   const Home: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -211,12 +78,12 @@ const fakeProducts: Product[] = [
           <div className="grid grid-cols-2 gap-4">
             {products.map((product: Product) => (
               <ProductCard
-                key={product.id}
+                key={product.menuItemId}
                 imgSrc={product.image}
                 title={product.name}
                 price={product.price}
                 width={105}
-                height={105} productId={product.id}
+                height={105} productId={product.menuItemId}
                 />
             ))}
           </div>

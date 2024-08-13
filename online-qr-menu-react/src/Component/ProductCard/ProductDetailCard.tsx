@@ -3,7 +3,7 @@ import React from 'react';
 interface ProductCardProps {
   imgSrc: string;
   title: string;
-  description: string; // Thêm mô tả sản phẩm
+  description: string;
   sizes: { size: string; price: number; isSelected: boolean }[];
   iceOptions: { option: string; isSelected: boolean }[];
   onSizeSelect: (size: string) => void;
@@ -18,7 +18,7 @@ interface ProductCardProps {
 const ProductDetailCard: React.FC<ProductCardProps> = ({
   imgSrc,
   title,
-  description, // Nhận mô tả sản phẩm
+  description,
   sizes,
   iceOptions,
   onSizeSelect,
