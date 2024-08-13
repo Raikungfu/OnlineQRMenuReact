@@ -21,7 +21,7 @@
 package-lock.json
 
 # client specific
-client/node_modules
-client/npm-debug.log*
-client/yarn-debug.log*
-client/yarn-error.log*
+online-qr-menu-react/node_modules
+online-qr-menu-react/npm-debug.log*
+online-qr-menu-react/yarn-debug.log*
+online-qr-menu-react/yarn-error.log*

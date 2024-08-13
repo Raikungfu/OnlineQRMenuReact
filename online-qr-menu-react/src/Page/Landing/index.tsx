@@ -46,7 +46,7 @@ const Landing: React.FC = () => {
       }
     };
 
-    // fetchData();
+    fetchData();
     
     const timer = setTimeout(() => {
       setVisible(false);
