@@ -46,6 +46,7 @@ const Landing: React.FC = () => {
       }
     };
 
+    // fetchData();
     
     const timer = setTimeout(() => {
       setVisible(false);
@@ -54,9 +55,6 @@ const Landing: React.FC = () => {
     return () => {
       clearTimeout(timer);
     };
-
-    fetchData();
-
   }, [id]);
 
   if (!data) return null;
