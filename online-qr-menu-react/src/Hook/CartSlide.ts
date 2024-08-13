@@ -1,10 +1,11 @@
-// cartSlice.ts
-
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface CartItem {
   productId: number;
   quantity: number;
+  sizes: { size: string; price: number }[];
+  iceOptions: { option: string }[];
+  note: string;
 }
 
 interface CartState {
@@ -23,6 +24,9 @@ const cartSlice = createSlice({
       const existingItem = state.items.find(item => item.productId === action.payload.productId);
       if (existingItem) {
         existingItem.quantity += action.payload.quantity;
+        existingItem.sizes = action.payload.sizes;
+        existingItem.iceOptions = action.payload.iceOptions;
+        existingItem.note = action.payload.note;
       } else {
         state.items.push(action.payload);
       }

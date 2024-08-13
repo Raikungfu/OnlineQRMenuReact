@@ -16,7 +16,7 @@ const fakeData: CoffeeShop = {
   SecondaryColor: "#FFFFFF",
   Description: "This is a great coffee shop.",
   Slogan: "Best Coffee in Town!",
-  Avatar: "https://th.bing.com/th/id/OIP.Xb2MJaRg3PUVdB1-h2bAHwHaHa?w=568&h=568&rs=1&pid=ImgDetMain", // Thay đổi đường dẫn tới ảnh mặc định
+  Avatar: "https://th.bing.com/th/id/OIP.Xb2MJaRg3PUVdB1-h2bAHwHaHa?w=568&h=568&rs=1&pid=ImgDetMain",
   CoverImage: "path/to/default/cover.jpg",
   Hotline: "123-456-7890",
   Email: "info@coffeeshop.com",
@@ -71,9 +71,9 @@ const Landing: React.FC = () => {
     )}
 
     <div
-      className={`${visible ? 'opacity-0' : 'opacity-100'} transition-opacity justify-center items-center py-24`}
+      className={`${visible ? 'opacity-0' : 'opacity-100'} transition-opacity justify-center items-center py-20`}
     >
-      <NavigationBar/>
+      <NavigationBar id={id} />
       <Outlet />
       <Footer/>
     </div>
