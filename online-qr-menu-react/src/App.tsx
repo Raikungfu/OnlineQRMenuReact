@@ -8,11 +8,11 @@ const App = () => {
     <Routes>
       <Route path="/menu/:id" element={<Landing />}>
         <Route index element={<Home />} />
-        <Route path="*" element={<Page404 />} />
       </Route>
       <Route path="*" element={<Page404 />} />
     </Routes>
   );
 };
+
 
 export default App;

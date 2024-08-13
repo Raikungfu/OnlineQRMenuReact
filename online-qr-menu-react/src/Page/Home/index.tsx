@@ -5,10 +5,8 @@ import ProductCard from '../../Component/ProductCard';
 import { Category } from '../../Type/Category';
 import { Product } from '../../Type/Product';
 import { API_GET_CATEGORIES, API_GET_PRODUCTS } from '../../Service/Home';
+import { useParams } from 'react-router-dom';
 
-interface HomeProps {
-  id?: string;
-}
 
 const fakeCategories: Category[] = [
   { id: 1, name: "Espresso", image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg" },
@@ -164,15 +162,19 @@ const fakeProducts: Product[] = [
       },
   ];  
 
-  const Home: React.FC<HomeProps> = ({ id }) => {
+  const Home: React.FC = () => {
+    const { id } = useParams<{ id: string }>();
     const [categories, setCategories] = useState<Category[]>(fakeCategories);
     const [products, setProducts] = useState<Product[]>(fakeProducts);
   
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const categoriesData = await API_GET_CATEGORIES(id);
-          const productsData = await API_GET_PRODUCTS(id);
+          const [productsData, categoriesData] = await Promise.all([
+            API_GET_PRODUCTS({ id }),
+            API_GET_CATEGORIES({ id })
+          ]);
+      
           if (categoriesData) {
             setCategories(categoriesData as unknown as Category[]);
           }
@@ -182,7 +184,7 @@ const fakeProducts: Product[] = [
         } catch (error) {
           console.error('Error fetching home data:', error);
         }
-      };
+      };      
   
       fetchData();
     }, [id]);
