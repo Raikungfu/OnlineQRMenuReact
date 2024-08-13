@@ -71,7 +71,7 @@ const Landing: React.FC = () => {
     )}
 
     <div
-      className={`${visible ? 'opacity-0' : 'opacity-100'} transition-opacity justify-center items-center h-screen`}
+      className={`${visible ? 'opacity-0' : 'opacity-100'} transition-opacity justify-center items-center py-24`}
     >
       <NavigationBar/>
       <Outlet />

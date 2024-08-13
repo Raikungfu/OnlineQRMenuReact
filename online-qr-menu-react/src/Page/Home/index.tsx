@@ -190,7 +190,7 @@ const fakeProducts: Product[] = [
     }, [id]);
   
     return (
-      <div className="max-w-[430px] mx-auto bg-white pt-24 p-4 flex flex-col">
+      <div className="max-w-[430px] mx-auto bg-white rounded-xl shadow-lg overflow-hidden flex flex-col space-y-6 p-4">
         <div className="w-full flex flex-nowrap overflow-x-hidden hover:overflow-x-auto">
           <div className="flex space-x-4">
             {categories.map((category) => (
@@ -216,8 +216,8 @@ const fakeProducts: Product[] = [
                 title={product.name}
                 price={product.price}
                 width={105}
-                height={105}
-              />
+                height={105} productId={product.id}
+                />
             ))}
           </div>
         </div>
