@@ -42,7 +42,7 @@ const ProductDetailCard: React.FC<ProductCardProps> = ({
         <p className="mt-2 text-gray-700">{description}</p>
 
         <div className="mt-4">
-          <h3 className="text-lg font-semibold">Sizes</h3>
+          <h3 className="text-base font-semibold">Kích thước</h3>
           <div className="grid grid-cols-2 gap-4 mt-2">
             {sizes.map(({ size, price, isSelected }) => (
               <label
@@ -66,7 +66,7 @@ const ProductDetailCard: React.FC<ProductCardProps> = ({
         </div>
 
         <div className="mt-4">
-          <h3 className="text-lg font-semibold">Ice Options</h3>
+          <h3 className="text-base font-semibold">Thêm lựa chọn</h3>
           <div className="grid grid-cols-2 gap-4 mt-2">
             {iceOptions.map(({ option, isSelected }) => (
               <label
@@ -89,7 +89,7 @@ const ProductDetailCard: React.FC<ProductCardProps> = ({
         </div>
 
         <div className="mt-4">
-          <label className="block text-sm font-medium text-gray-700">Notes</label>
+          <label className="block text-sm font-medium text-gray-700">Ghi chú</label>
           <textarea
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 p-2"
             rows={2}
@@ -119,7 +119,7 @@ const ProductDetailCard: React.FC<ProductCardProps> = ({
             className="ml-auto w-full py-2 bg-orange-500 text-white rounded-lg"
             onClick={onAddToCart}
           >
-            Add to Cart
+            Thêm vào giỏ hàng
           </button>
       </div>
       </div>
