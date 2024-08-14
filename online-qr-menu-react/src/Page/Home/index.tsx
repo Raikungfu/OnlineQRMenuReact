@@ -27,7 +27,140 @@ const fakeCategories: Category[] = [
   { id: 81, name: "Cappuccino", image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg" },
 ];
 
-const fakeProducts: Product[] = [];  
+const fakeProducts: Product[] = [
+    {
+      menuItemId: 1,
+      name: "Espresso Single",
+      image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
+      description: "A strong and rich espresso shot.",
+      price: 2.99,
+      size: "Small",
+      type: "Coffee",
+      coffeeShopId: 1,
+      categoryId: 1,
+    },
+    {
+      menuItemId: 2,
+      name: "Cappuccino",
+      image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
+      description: "Creamy and frothy cappuccino.",
+      price: 3.99,
+      size: "Medium",
+      type: "Coffee",
+      coffeeShopId: 1,
+      categoryId: 2,
+    },
+    {
+      menuItemId: 3,
+      name: "Latte",
+      image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
+      description: "Smooth and milky latte.",
+      price: 4.49,
+      size: "Large",
+      type: "Coffee",
+      coffeeShopId: 2,
+      categoryId: 3,
+    },
+    {
+      menuItemId: 4,
+        name: "Espresso Single",
+        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
+        description: "A strong and rich espresso shot.",
+        price: 2.99,
+        size: "Small",
+        type: "Coffee",
+        coffeeShopId: 1,
+        categoryId: 1,
+      },
+      {
+        menuItemId: 5,
+        name: "Cappuccino",
+        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
+        description: "Creamy and frothy cappuccino.",
+        price: 3.99,
+        size: "Medium",
+        type: "Coffee",
+        coffeeShopId: 1,
+        categoryId: 2,
+      },
+      {
+        menuItemId: 6,
+        name: "Latte",
+        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
+        description: "Smooth and milky latte.",
+        price: 4.49,
+        size: "Large",
+        type: "Coffee",
+        coffeeShopId: 2,
+        categoryId: 3,
+      },
+      {
+        menuItemId: 7,
+        name: "Espresso Single",
+        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
+        description: "A strong and rich espresso shot.",
+        price: 2.99,
+        size: "Small",
+        type: "Coffee",
+        coffeeShopId: 1,
+        categoryId: 1,
+      },
+      {
+        menuItemId: 8,
+        name: "Cappuccino",
+        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
+        description: "Creamy and frothy cappuccino.",
+        price: 3.99,
+        size: "Medium",
+        type: "Coffee",
+        coffeeShopId: 1,
+        categoryId: 2,
+      },
+      {
+        menuItemId: 9,
+        name: "Latte",
+        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
+        description: "Smooth and milky latte.",
+        price: 4.49,
+        size: "Large",
+        type: "Coffee",
+        coffeeShopId: 2,
+        categoryId: 3,
+      },
+      {
+        menuItemId: 10,
+        name: "Espresso Single",
+        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
+        description: "A strong and rich espresso shot.",
+        price: 2.99,
+        size: "Small",
+        type: "Coffee",
+        coffeeShopId: 1,
+        categoryId: 1,
+      },
+      {
+        menuItemId: 11,
+        name: "Cappuccino",
+        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
+        description: "Creamy and frothy cappuccino.",
+        price: 3.99,
+        size: "Medium",
+        type: "Coffee",
+        coffeeShopId: 1,
+        categoryId: 2,
+      },
+      {
+        menuItemId: 12,
+        name: "Latte",
+        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
+        description: "Smooth and milky latte.",
+        price: 4.49,
+        size: "Large",
+        type: "Coffee",
+        coffeeShopId: 2,
+        categoryId: 3,
+      },
+  ];  
 
   const Home: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -45,6 +178,7 @@ const fakeProducts: Product[] = [];
           if (categoriesData) {
             setCategories(categoriesData as unknown as Category[]);
           }
+
           if (productsData) {
             setProducts(productsData as unknown as Product[]);
           }
@@ -53,11 +187,11 @@ const fakeProducts: Product[] = [];
         }
       };      
   
-      fetchData();
+      // fetchData();
     }, [id]);
   
     return (
-      <div className="max-w-[430px] mx-auto bg-white rounded-xl shadow-lg overflow-hidden flex flex-col space-y-6 p-4">
+      <div className="w-full max-w-full sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden flex flex-col space-y-6 p-4">
         <div className="w-full flex flex-nowrap overflow-x-hidden hover:overflow-x-auto">
           <div className="flex space-x-4">
             {categories.map((category) => (

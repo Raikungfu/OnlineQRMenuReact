@@ -1,5 +1,4 @@
 export interface Product {
-    $id: string,
     menuItemId: number;
     name: string;
     image: string;

@@ -74,12 +74,15 @@ const Landing: React.FC = () => {
       className={`${visible ? 'opacity-0' : 'opacity-100'} transition-opacity justify-center items-center py-20`}
     >
       <NavigationBar id={id} />
-      <Outlet context={{ id }} />
+      <div className="mx-auto px-4 overflow-x-hidden">
+        <div className="w-screen max-w-screen-sm mx-auto grid grid-cols-1 gap-4">
+            <Outlet context={{ id }} />
+        </div>
+      </div>
+
       <Footer id={id}/>
     </div>
   </div>
-
-  
   );
   
 };

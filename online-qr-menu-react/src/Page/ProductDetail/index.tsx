@@ -54,7 +54,7 @@ const ProductDetail: React.FC = () => {
   const dispatch = useDispatch();
   const [product, setProduct] = useState<Product | null>(null);
   const navigate = useNavigate();
-  const { id } = useOutletContext<{id: string}>();
+  const { id } = useOutletContext<{ id: string }>();
 
   useEffect(() => {
     setProduct(mockProduct);
@@ -119,13 +119,13 @@ const ProductDetail: React.FC = () => {
         note: product.note,
         price: product.price
       }));
-      navigate(`menu/${id}`);
+      navigate(`/menu/${id}`);
     }
   };
   
 
   return (    
-    <div className="w-[430px] mx-auto bg-white rounded-xl shadow-lg overflow-hidden flex flex-col space-y-6">
+    <div className="w-full max-w-full sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden flex flex-col space-y-6 p-4">
       <div className="flex flex-col md:flex-row">
         {product && (
           <ProductDetailCard

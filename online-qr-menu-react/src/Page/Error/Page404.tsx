@@ -1,8 +1,12 @@
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, useOutletContext } from "react-router-dom";
 
-const Page404 = () => {
+const Page404: React.FC = () => {
+  
+  const { idCoffeeShop, idTable } = useOutletContext<{ idCoffeeShop: string, idTable: string }>();
+  
   return (
-    <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8 w-screen h-screen">
+    <main className="grid min-h-full place-items-center bg-white w-screen h-screen overflow-hidden">
       <div className="text-center">
         <h1 className="font-extrabold dark:text-red-600" content="404" />
         <h1
@@ -14,7 +18,7 @@ const Page404 = () => {
         <div className="mt-10 flex items-center justify-center gap-x-6">
           <Link
             id={"goBack-btn"}
-            to={"/"}
+            to={`/menu/${idCoffeeShop}`}
             className={"access-link"}
             children={
               <p>

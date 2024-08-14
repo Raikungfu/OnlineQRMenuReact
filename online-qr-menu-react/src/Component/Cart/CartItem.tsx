@@ -22,7 +22,7 @@ const CartItem: React.FC<CartItemProps> = ({ productName, size, quantity, price,
   };
 
   return (
-    <div className="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow-md">
+    <div className="w-full p-4 bg-white border border-gray-200 rounded-lg shadow-md">
       <div className="flex items-center justify-between border-b border-gray-200 pb-2 mb-2">
         <div className="text-xl font-semibold text-black">{productName}</div>
         <div className="text-base font-semibold text-black">$ {price.toFixed(2)}</div>

@@ -8,7 +8,7 @@ interface CategoryCardProps {
 }
 const CategoryCard: React.FC<CategoryCardProps> = ({ imgSrc, title, width, height }) => (
   <div
-  className={`w-[${width}px] h-[${height}px] bg-white rounded-[20px] border border-black/50 overflow-hidden flex flex-col p-1`}
+  className={`w-[${width}px] h-[${height}px] bg-white rounded-[20px] border overflow-hidden flex flex-col p-1`}
 >
   <img
     className="w-full h-full object-cover rounded-[20px]"

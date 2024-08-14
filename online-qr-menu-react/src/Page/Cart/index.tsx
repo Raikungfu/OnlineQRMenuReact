@@ -4,10 +4,13 @@ import { RootState } from '../../Hook/rootReducer';
 import { removeFromCart, updateQuantity } from '../../Hook/CartSlide';
 import CartSummary from '../../Component/Cart';
 import CartItem from '../../Component/Cart/CartItem';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
 const Cart: React.FC = () => {
   const dispatch = useDispatch();
+  const nav = useNavigate();
   const items = useSelector((state: RootState) => state.cart.items);
+  const { id } = useOutletContext<{ id: string }>();
 
   const subtotal = items.reduce((acc, item) => acc + item.quantity * item.price, 0);
   const discount = 0;
@@ -33,8 +36,17 @@ const Cart: React.FC = () => {
     dispatch(updateQuantity({ productId, quantity }));
   };
 
+  const handleCheckout = () => {
+    nav(`/order/${id}`);
+  };
+  
+  const handleCancel = () => {
+    nav(-1);
+  };
+  
+
   return (
-    <div className="w-[430px] mx-auto bg-white rounded-xl shadow-lg overflow-hidden flex flex-col space-y-6 p-4">
+    <div className="w-full max-w-full sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden flex flex-col space-y-6 p-4">
       <div className="overflow-y-auto max-h-[calc(100vh-200px)]">
         {items.map(item => (
           <CartItem
@@ -49,7 +61,7 @@ const Cart: React.FC = () => {
           />
         ))}
       </div>
-        <CartSummary subtotal={subtotal} discount={discount} total={total} />
+        <CartSummary subtotal={subtotal} discount={discount} total={total} onCheckout={handleCheckout} onCancel={handleCancel} />
     </div>
   );
 };

@@ -4,17 +4,21 @@ import Landing from './Page/Landing';
 import Page404 from './Page/Error/Page404';
 import ProductDetail from "./Page/ProductDetail";
 import Cart from "./Page/Cart";
+import RedirectToExternal from "./Page/Error/RedirectLink";
 
 const App = () => {
   return (
     <Routes>
-      <Route path="/menu/:id" element={<Landing />}>
+    <Route path="/">
+      <Route path="menu/:id" element={<Landing />}>
         <Route index element={<Home />} />
-        <Route path="product-detail/:id" element={<ProductDetail />} />
+        <Route path="product-detail/:id1" element={<ProductDetail />} />
         <Route path="cart" element={<Cart />} />
+        <Route path="*" element={<Page404 />} />
       </Route>
-      <Route path="*" element={<Page404 />} />
-    </Routes>
+      <Route path="*" element={<RedirectToExternal />} />
+    </Route>
+  </Routes>
   );
 };
 
