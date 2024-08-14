@@ -3,7 +3,7 @@ import { Link, useOutletContext } from "react-router-dom";
 
 const Page404: React.FC = () => {
   
-  const { idCoffeeShop, idTable } = useOutletContext<{ idCoffeeShop: string, idTable: string }>();
+  const { id } = useOutletContext<{ id: string }>();
   
   return (
     <main className="grid min-h-full place-items-center bg-white w-screen h-screen overflow-hidden">
@@ -18,7 +18,7 @@ const Page404: React.FC = () => {
         <div className="mt-10 flex items-center justify-center gap-x-6">
           <Link
             id={"goBack-btn"}
-            to={`/menu/${idCoffeeShop}`}
+            to={`/menu/${id}`}
             className={"access-link"}
             children={
               <p>

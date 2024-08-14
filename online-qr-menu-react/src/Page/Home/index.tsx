@@ -187,7 +187,7 @@ const fakeProducts: Product[] = [
         }
       };      
   
-      // fetchData();
+      fetchData();
     }, [id]);
   
     return (
