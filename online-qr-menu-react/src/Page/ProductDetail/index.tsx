@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { addToCart } from '../../Hook/CartSlide';
+import { addToCart, SizeOption } from '../../Hook/CartSlide';
 import ProductDetailCard from '../../Component/ProductCard/ProductDetailCard';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 
@@ -108,22 +108,34 @@ const ProductDetail: React.FC = () => {
     }
   };
 
+  
   const handleAddToCart = () => {
     if (product) {
+      const sizeOptions: SizeOption[] = product.sizes
+        .filter(s => s.isSelected)
+        .flatMap(size => 
+          product.iceOptions
+            .filter(o => o.isSelected)
+            .map(option => ({
+              size: size.size,
+              option: option.option,
+              quantity: product.quantity
+            }))
+        );
+  
       dispatch(addToCart({
         productId: product.productId,
         productName: product.name,
         quantity: product.quantity,
-        sizes: product.sizes.filter(s => s.isSelected),
-        iceOptions: product.iceOptions.filter(o => o.isSelected),
+        sizeOptions,
         note: product.note,
-        price: product.price
+        price: product.price,
       }));
+  
       navigate(`/menu/${id}`);
     }
   };
   
-
   return (    
     <div className="w-full max-w-full sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden flex flex-col space-y-6 p-4">
       <div className="flex flex-col md:flex-row">

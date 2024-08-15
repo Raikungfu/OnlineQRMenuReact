@@ -1,23 +1,31 @@
 import React from 'react';
 
-interface CartItemProps {
-  productName: string;
-  quantity: number;
+interface SizeOption {
   size: string;
-  price: number;
-  onEdit: () => void;
-  onDelete: () => void;
-  onQuantityChange: (quantity: number) => void;
+  option: string;
+  quantity: number;
 }
 
-const CartItem: React.FC<CartItemProps> = ({ productName, size, quantity, price, onEdit, onDelete, onQuantityChange }) => {
-  const handleIncrement = () => {
-    onQuantityChange(quantity + 1);
+interface CartItemProps {
+  productName: string;
+  sizeOptions: SizeOption[];
+  price: number;
+  onDelete: () => void;
+  onQuantityChange: (size: string, option: string, quantity: number) => void;
+}
+
+const CartItem: React.FC<CartItemProps> = ({ productName, sizeOptions, price, onDelete, onQuantityChange }) => {
+  const handleIncrement = (size: string, option: string) => {
+    const sizeOption = sizeOptions.find(o => o.size === size && o.option === option);
+    if (sizeOption) {
+      onQuantityChange(size, option, sizeOption.quantity + 1);
+    }
   };
 
-  const handleDecrement = () => {
-    if (quantity > 1) {
-      onQuantityChange(quantity - 1);
+  const handleDecrement = (size: string, option: string) => {
+    const sizeOption = sizeOptions.find(o => o.size === size && o.option === option);
+    if (sizeOption && sizeOption.quantity > 1) {
+      onQuantityChange(size, option, sizeOption.quantity - 1);
     }
   };
 
@@ -27,31 +35,34 @@ const CartItem: React.FC<CartItemProps> = ({ productName, size, quantity, price,
         <div className="text-xl font-semibold text-black">{productName}</div>
         <div className="text-base font-semibold text-black">$ {price.toFixed(2)}</div>
       </div>
-      <div className="flex items-center justify-between mb-2">
-        <div className="text-gray-600 text-sm">{size}</div>
-        <div className="text-gray-600 text-sm">Số lượng: {quantity}</div>
+      <div className="flex flex-col mb-2">
+        {sizeOptions.map((option, index) => (
+          <div key={index} className="flex items-center justify-between text-gray-600 text-sm mb-1">
+            <div>{option.size} - {option.option}</div>
+            <div className="flex items-center">
+              <button
+                className="w-8 h-8 bg-white border border-gray-300 rounded-full flex items-center justify-center text-xl font-light"
+                onClick={() => handleDecrement(option.size, option.option)}
+              >
+                -
+              </button>
+              <span className="mx-2 text-lg font-medium">{option.quantity}</span>
+              <button
+                className="w-8 h-8 bg-white border border-gray-300 rounded-full flex items-center justify-center text-xl font-light"
+                onClick={() => handleIncrement(option.size, option.option)}
+              >
+                +
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
-      <div className="flex items-center justify-between mt-2">
-        <button
-          className="text-[#f58020] text-xs font-medium"
-          onClick={onEdit}
-        >
-          Chỉnh sửa
-        </button>
+      <div className="flex items-center justify-end mt-2">
         <button
           className="text-[#f58020] text-xs font-medium"
           onClick={onDelete}
         >
           Xóa
-        </button>
-      </div>
-      <div className="flex items-center justify-end mt-4">
-        <button className="w-8 h-8 bg-white border border-gray-300 rounded-full flex items-center justify-center" onClick={handleDecrement}>
-          <span className="text-xl font-light">-</span>
-        </button>
-        <span className="mx-2 text-lg font-medium">{quantity}</span>
-        <button className="w-8 h-8 bg-white border border-gray-300 rounded-full flex items-center justify-center" onClick={handleIncrement}>
-          <span className="text-xl font-light">+</span>
         </button>
       </div>
     </div>

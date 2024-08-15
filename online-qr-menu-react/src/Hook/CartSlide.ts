@@ -1,11 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+export interface SizeOption {
+  size: string;
+  option: string;
+  quantity: number;
+}
+
 interface CartItem {
   productId: number;
   productName: string;
   quantity: number;
-  sizes: { size: string; }[];
-  iceOptions: { option: string }[];
+  sizeOptions: SizeOption[];
   note: string;
   price: number;
 }
@@ -23,14 +28,27 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action: PayloadAction<CartItem>) => {
-      const existingItem = state.items.find(item => item.productId === action.payload.productId);
+      const newItem = action.payload;
+      const existingItem = state.items.find(item => item.productId === newItem.productId);
+      
       if (existingItem) {
-        existingItem.quantity += action.payload.quantity;
-        existingItem.sizes = action.payload.sizes;
-        existingItem.iceOptions = action.payload.iceOptions;
-        existingItem.note = action.payload.note;
+        existingItem.quantity += newItem.quantity;
+
+        newItem.sizeOptions.forEach(newSizeOption => {
+          const existingSizeOption = existingItem.sizeOptions.find(
+            sizeOption => sizeOption.size === newSizeOption.size && sizeOption.option === newSizeOption.option
+          );
+
+          if (existingSizeOption) {
+            existingSizeOption.quantity += newSizeOption.quantity;
+          } else {
+            existingItem.sizeOptions.push(newSizeOption);
+          }
+        });
+
+        existingItem.note = newItem.note;
       } else {
-        state.items.push(action.payload);
+        state.items.push(newItem);
       }
     },
     removeFromCart: (state, action: PayloadAction<number>) => {
@@ -42,11 +60,25 @@ const cartSlice = createSlice({
         existingItem.quantity = action.payload.quantity;
       }
     },
+    updateSizeOptionQuantity: (state, action: PayloadAction<{ productId: number; size: string; option: string; quantity: number }>) => {
+      const { productId, size, option, quantity } = action.payload;
+      const existingItem = state.items.find(item => item.productId === productId);
+      
+      if (existingItem) {
+        const existingSizeOption = existingItem.sizeOptions.find(
+          sizeOption => sizeOption.size === size && sizeOption.option === option
+        );
+
+        if (existingSizeOption) {
+          existingSizeOption.quantity = quantity;
+        }
+      }
+    },
     clearCart: (state) => {
       state.items = [];
     },
   },
 });
 
-export const { addToCart, removeFromCart, updateQuantity, clearCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, updateQuantity, updateSizeOptionQuantity, clearCart } = cartSlice.actions;
 export default cartSlice.reducer;
