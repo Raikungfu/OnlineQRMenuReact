@@ -14,6 +14,7 @@ const initialOptions = {
 const PayPalButton: React.FC<PayPalButtonProps> = ({ amount, onSuccess }) => {
     
     const handleApprove = (data: any, actions: any) => {
+        console.log(data);
         return actions.order.capture().then((details: any) => {
             alert(`Transaction completed by ${details.payer.name.given_name}`);
             onSuccess();
@@ -29,6 +30,7 @@ const PayPalButton: React.FC<PayPalButtonProps> = ({ amount, onSuccess }) => {
         <PayPalScriptProvider options={initialOptions}>
             <PayPalButtons
                 createOrder={(data: any, actions: any) => {
+                    console.log(data);
                     return actions.order.create({
                         purchase_units: [{
                             amount: {

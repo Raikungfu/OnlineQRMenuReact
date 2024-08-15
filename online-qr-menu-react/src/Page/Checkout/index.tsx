@@ -5,14 +5,16 @@ import { useNavigate } from 'react-router-dom';
 import PayPalButton from '../../Component/Layout/PaypalButton';
 import { RootState } from '../../Hook/rootReducer';
 import { useSelector } from 'react-redux';
+import QRCode from 'react-qr-code';
 
 const Checkout: React.FC = () => {
     const [selectedMethod, setSelectedMethod] = useState<string>('Cash');
     const [amount, setAmount] = useState<number>(10);
     const [showPayPal, setShowPayPal] = useState<boolean>(false);
+    const [qrCode, setQrCode] = useState<string | null>(null);
+    const [qrCodeLink, setQrCodeLink] = useState<string | null>(null);
     const nav = useNavigate();
     const items = useSelector((state: RootState) => state.cart.items);
-
 
     const subtotal = items.reduce((acc, item) => {
       const itemTotal = item.sizeOptions.reduce((itemAcc, sizeOption) => itemAcc + (sizeOption.quantity * item.price), 0);
@@ -21,13 +23,49 @@ const Checkout: React.FC = () => {
   
     const discount = 0;
 
-    const handleChange = (method: string) => {
+    const handleChange = async (method: string) => {
         setSelectedMethod(method);
         if (method === 'PayPal') {
             setAmount(subtotal - discount);
             setShowPayPal(true);
+        } else if (method === 'QR') {
+            setAmount(subtotal - discount);
+            setShowPayPal(false);
+            await generateQRCode(subtotal - discount);
         } else {
             setShowPayPal(false);
+        }
+    };
+
+    const generateQRCode = async (amount: number) => {
+        try {
+            const response = await fetch('https://<vietqr-host>/<basepath>/api/qr/generate-customer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer <token>'
+                },
+                body: JSON.stringify({
+                    bankCode: 'YOUR_BANK_CODE',
+                    bankAccount: 'YOUR_BANK_ACCOUNT', // Thay thế bằng tài khoản ngân hàng thực tế
+                    userBankName: 'YOUR_NAME', // Thay thế bằng tên của chủ tài khoản
+                    content: 'Payment for order',
+                    qrType: 0, // Tùy chọn loại mã QR: 0 cho mã QR động
+                    amount: amount,
+                    orderId: 'ORDER_ID', // Thay thế bằng mã ID giao dịch thực tế
+                    transType: 'C',
+                    terminalCode: 'YOUR_TERMINAL_CODE', // Thay thế bằng mã cửa hàng thực tế
+                    serviceCode: 'YOUR_SERVICE_CODE', // Thay thế bằng mã dịch vụ thực tế
+                    sign: 'YOUR_SIGNATURE', // Thay thế bằng chữ ký thực tế (nếu cần)
+                    urlLink: 'YOUR_REDIRECT_URL' // Thay thế bằng URL cần chuyển hướng sau khi quét mã QR
+                })
+            });
+            const data = await response.json();
+            setQrCode(data.qrCode); // Mã QR dạng string
+            setQrCodeLink(data.qrLink); // Mã QR dạng link
+        } catch (error) {
+            console.error('Error generating QR code:', error);
+            alert('Đã xảy ra lỗi khi tạo mã QR. Vui lòng thử lại.');
         }
     };
 
@@ -38,10 +76,10 @@ const Checkout: React.FC = () => {
                     alert('Thanh toán bằng tiền mặt thành công');
                     break;
                 case 'QR':
-                    await fetch('/api/checkout/qr', { method: 'POST' });
                     alert('Thanh toán qua mã QR thành công');
                     break;
                 case 'PayPal':
+                    setShowPayPal(false);
                     alert('Thanh toán qua mã Paypal thành công');
                     break;
                 case 'Bank':
@@ -90,7 +128,21 @@ const Checkout: React.FC = () => {
                 {showPayPal ? (
                     <PayPalButton amount={amount} onSuccess={handleCheckout} />
                 ) : (
-                    <PaymentAccept onCheckout={handleCheckout} onCancel={handleCancel} checkoutText={'Thanh toán'} cancelText={'Hủy'} />
+                    <div>
+                        {selectedMethod === 'QR' && qrCode ? (
+                            <div className="flex flex-col items-center">
+                                <QRCode value={qrCode} size={256} />
+                                <p className="mt-4 text-center">Quét mã QR để thanh toán</p>
+                                {qrCodeLink && (
+                                    <a href={qrCodeLink} target="_blank" rel="noopener noreferrer" className="mt-4 text-blue-500">
+                                        Mở liên kết mã QR
+                                    </a>
+                                )}
+                            </div>
+                        ) : (
+                            <PaymentAccept onCheckout={handleCheckout} onCancel={handleCancel} checkoutText={'Thanh toán'} cancelText={'Hủy'} />
+                        )}
+                    </div>
                 )}
             </div>
         </div>

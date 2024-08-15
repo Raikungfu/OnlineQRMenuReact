@@ -1,7 +1,7 @@
 
 import { AxiosError } from "axios";
 import AxiosApi from "../Config/axios";
-import { errorData, FormDataOrOther } from "../Type/constant";
+import { errorData } from "../Type/constant";
 
 
 export const API_PAYPAL_CHECKOUT = (amount: string): Promise<any> => {
