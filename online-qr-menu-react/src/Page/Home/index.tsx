@@ -4,8 +4,8 @@ import SearchBar from '../../Component/SearchBar';
 import ProductCard from '../../Component/ProductCard';
 import { Category } from '../../Type/Category';
 import { Product } from '../../Type/Product';
-import { API_GET_CATEGORIES, API_GET_PRODUCTS } from '../../Service/Home';
 import { useParams } from 'react-router-dom';
+import { API_GET_MENU_BY_SHOPID } from '../../Service/MenuApi';
 
 
 const fakeCategories: Category[] = [
@@ -27,167 +27,30 @@ const fakeCategories: Category[] = [
   { id: 81, name: "Cappuccino", image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg" },
 ];
 
-const fakeProducts: Product[] = [
-    {
-      menuItemId: 1,
-      name: "Espresso Single",
-      image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-      description: "A strong and rich espresso shot.",
-      price: 2.99,
-      size: "Small",
-      type: "Coffee",
-      coffeeShopId: 1,
-      categoryId: 1,
-    },
-    {
-      menuItemId: 2,
-      name: "Cappuccino",
-      image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-      description: "Creamy and frothy cappuccino.",
-      price: 3.99,
-      size: "Medium",
-      type: "Coffee",
-      coffeeShopId: 1,
-      categoryId: 2,
-    },
-    {
-      menuItemId: 3,
-      name: "Latte",
-      image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-      description: "Smooth and milky latte.",
-      price: 4.49,
-      size: "Large",
-      type: "Coffee",
-      coffeeShopId: 2,
-      categoryId: 3,
-    },
-    {
-      menuItemId: 4,
-        name: "Espresso Single",
-        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-        description: "A strong and rich espresso shot.",
-        price: 2.99,
-        size: "Small",
-        type: "Coffee",
-        coffeeShopId: 1,
-        categoryId: 1,
-      },
-      {
-        menuItemId: 5,
-        name: "Cappuccino",
-        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-        description: "Creamy and frothy cappuccino.",
-        price: 3.99,
-        size: "Medium",
-        type: "Coffee",
-        coffeeShopId: 1,
-        categoryId: 2,
-      },
-      {
-        menuItemId: 6,
-        name: "Latte",
-        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-        description: "Smooth and milky latte.",
-        price: 4.49,
-        size: "Large",
-        type: "Coffee",
-        coffeeShopId: 2,
-        categoryId: 3,
-      },
-      {
-        menuItemId: 7,
-        name: "Espresso Single",
-        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-        description: "A strong and rich espresso shot.",
-        price: 2.99,
-        size: "Small",
-        type: "Coffee",
-        coffeeShopId: 1,
-        categoryId: 1,
-      },
-      {
-        menuItemId: 8,
-        name: "Cappuccino",
-        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-        description: "Creamy and frothy cappuccino.",
-        price: 3.99,
-        size: "Medium",
-        type: "Coffee",
-        coffeeShopId: 1,
-        categoryId: 2,
-      },
-      {
-        menuItemId: 9,
-        name: "Latte",
-        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-        description: "Smooth and milky latte.",
-        price: 4.49,
-        size: "Large",
-        type: "Coffee",
-        coffeeShopId: 2,
-        categoryId: 3,
-      },
-      {
-        menuItemId: 10,
-        name: "Espresso Single",
-        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-        description: "A strong and rich espresso shot.",
-        price: 2.99,
-        size: "Small",
-        type: "Coffee",
-        coffeeShopId: 1,
-        categoryId: 1,
-      },
-      {
-        menuItemId: 11,
-        name: "Cappuccino",
-        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-        description: "Creamy and frothy cappuccino.",
-        price: 3.99,
-        size: "Medium",
-        type: "Coffee",
-        coffeeShopId: 1,
-        categoryId: 2,
-      },
-      {
-        menuItemId: 12,
-        name: "Latte",
-        image: "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cafe-Au-Lait-001s.jpg",
-        description: "Smooth and milky latte.",
-        price: 4.49,
-        size: "Large",
-        type: "Coffee",
-        coffeeShopId: 2,
-        categoryId: 3,
-      },
-  ];  
-
   const Home: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [categories, setCategories] = useState<Category[]>(fakeCategories);
-    const [products, setProducts] = useState<Product[]>(fakeProducts);
-  
+    const [products, setProducts] = useState<Product[]>([]);
+
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const [productsData, categoriesData] = await Promise.all([
-            API_GET_PRODUCTS({ id }),
-            API_GET_CATEGORIES({ id })
-          ]);
-      
-          if (categoriesData) {
-            setCategories(categoriesData as unknown as Category[]);
-          }
+          const productsData= await 
+            API_GET_MENU_BY_SHOPID(id) as unknown as {$id: string, $values: Product[] };
+            setCategories(fakeCategories);
+          // if (categoriesData) {
+          //   setCategories(categoriesData as unknown as Category[]);
+          // }
 
           if (productsData) {
-            setProducts(productsData as unknown as Product[]);
+            setProducts(productsData.$values);
           }
         } catch (error) {
           console.error('Error fetching home data:', error);
         }
       };      
-  
-      fetchData();
+
+       fetchData();
     }, [id]);
   
     return (

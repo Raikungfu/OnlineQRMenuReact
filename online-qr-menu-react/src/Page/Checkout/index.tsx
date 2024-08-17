@@ -13,7 +13,6 @@ import { CartItem } from '../../Hook/CartSlide';
 
 export interface SendOrderItem {
     productId: number;
-    productName: string;
     quantity: number;
     size: string;
     option: string;
@@ -39,7 +38,6 @@ const Checkout: React.FC = () => {
             item.sizeOptions.forEach(sizeOption => {
                 const orderItem: SendOrderItem = {
                     productId: item.productId,
-                    productName: item.productName,
                     quantity: sizeOption.quantity,
                     size: sizeOption.size,
                     option: sizeOption.option,

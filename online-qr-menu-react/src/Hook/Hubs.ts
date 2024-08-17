@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import * as signalR from '@microsoft/signalr';
+import { API_BASE_URL } from '../Type/constant';
 
 interface UseSignalRProps {
     onOrderStatusUpdate: (orderId: string, status: string) => void;
@@ -9,7 +10,7 @@ interface UseSignalRProps {
 const useSignalR = ({ onOrderStatusUpdate, onServiceCall }: UseSignalRProps) => {
     useEffect(() => {
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl("https://localhost:7195/AppHub/order", {
+            .withUrl(`${API_BASE_URL}/AppHub/order`, {
                 skipNegotiation: true,
                 transport: signalR.HttpTransportType.WebSockets
               })
