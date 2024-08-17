@@ -24,7 +24,7 @@ export const API_INFO_COFFEE_SHOP = <T>(
 export const API_GET_PRODUCTS = <T>(
   data: FormDataOrOther<T>
 ): Promise<T> => {
-  return AxiosApi.get<T>("/products", data)
+  return AxiosApi.get<T>("/api/menu/", data)
     .then((response) => {
       if (response.data) {
         return response.data;

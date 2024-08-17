@@ -2,7 +2,6 @@
 import { AxiosError } from "axios";
 import AxiosApi from "../Config/axios";
 import { errorData } from "../Type/constant";
-import { CartItem } from "../Hook/CartSlide";
 import { SendOrderItem } from "../Page/Checkout";
 
   export const API_ORDER = (items: SendOrderItem[], paymentMethod: string): Promise<any> => {

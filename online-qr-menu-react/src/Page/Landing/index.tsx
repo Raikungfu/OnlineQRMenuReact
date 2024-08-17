@@ -6,6 +6,7 @@ import { API_INFO_COFFEE_SHOP } from '../../Service/Home';
 import { CoffeeShop } from '../../Type/CoffeeShop';
 import Footer from '../../Component/Footer';
 import NavigationBar from '../../Component/Nav';
+import OrderStatusComponent from '../../Component/OrderStatus';
 
 const fakeData: CoffeeShop = {
   CoffeeShopId: 0,
@@ -79,6 +80,7 @@ const Landing: React.FC = () => {
       </div>
     )}
 
+<OrderStatusComponent />
     <div
       className={`${visible ? 'opacity-0' : 'opacity-100'} transition-opacity justify-center items-center py-20`}
     >
