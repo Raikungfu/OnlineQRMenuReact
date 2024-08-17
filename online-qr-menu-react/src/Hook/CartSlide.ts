@@ -6,7 +6,7 @@ export interface SizeOption {
   quantity: number;
 }
 
-interface CartItem {
+export interface CartItem {
   productId: number;
   productName: string;
   quantity: number;
@@ -20,7 +20,11 @@ interface CartState {
 }
 
 const initialState: CartState = {
-  items: [],
+  items: JSON.parse(localStorage.getItem('cart') || '[]'),
+};
+
+const saveCartToLocalStorage = (cartItems: CartItem[]) => {
+  localStorage.setItem('cart', JSON.stringify(cartItems));
 };
 
 const cartSlice = createSlice({
@@ -50,14 +54,18 @@ const cartSlice = createSlice({
       } else {
         state.items.push(newItem);
       }
+
+      saveCartToLocalStorage(state.items);
     },
     removeFromCart: (state, action: PayloadAction<number>) => {
       state.items = state.items.filter(item => item.productId !== action.payload);
+      saveCartToLocalStorage(state.items);
     },
     updateQuantity: (state, action: PayloadAction<{ productId: number; quantity: number }>) => {
       const existingItem = state.items.find(item => item.productId === action.payload.productId);
       if (existingItem) {
         existingItem.quantity = action.payload.quantity;
+        saveCartToLocalStorage(state.items);
       }
     },
     updateSizeOptionQuantity: (state, action: PayloadAction<{ productId: number; size: string; option: string; quantity: number }>) => {
@@ -71,11 +79,13 @@ const cartSlice = createSlice({
 
         if (existingSizeOption) {
           existingSizeOption.quantity = quantity;
+          saveCartToLocalStorage(state.items);
         }
       }
     },
     clearCart: (state) => {
       state.items = [];
+      saveCartToLocalStorage(state.items);
     },
   },
 });

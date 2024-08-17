@@ -6,6 +6,7 @@ import ProductDetail from "./Page/ProductDetail";
 import Cart from "./Page/Cart";
 import RedirectToExternal from "./Page/Error/RedirectLink";
 import Checkout from "./Page/Checkout";
+import OrderDetail from "./Page/OrderDetail";
 
 const App = () => {
   return (
@@ -14,7 +15,8 @@ const App = () => {
       <Route path="menu/:id" element={<Landing />}>
         <Route index element={<Home />} />
         <Route path="product-detail/:id1" element={<ProductDetail />} />
-        <Route path="order" element={<Checkout />} />
+        <Route path="checkout" element={<Checkout />} />
+        <Route path="order-detail/:id2" element={<OrderDetail />} />
         <Route path="cart" element={<Cart />} />
         <Route path="*" element={<Page404 />} />
       </Route>

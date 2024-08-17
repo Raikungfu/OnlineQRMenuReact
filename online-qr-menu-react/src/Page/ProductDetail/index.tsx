@@ -54,7 +54,11 @@ const ProductDetail: React.FC = () => {
   const dispatch = useDispatch();
   const [product, setProduct] = useState<Product | null>(null);
   const navigate = useNavigate();
-  const { id } = useOutletContext<{ id: string }>();
+  const { id, triggerNotification } = useOutletContext<{ id: string, triggerNotification: (message: string) => void }>();
+
+  const handleClick = () => {
+    triggerNotification(`Product ${product?.name} x ${product?.quantity} has been added cart success!`);
+  };
 
   useEffect(() => {
     setProduct(mockProduct);
@@ -131,7 +135,7 @@ const ProductDetail: React.FC = () => {
         note: product.note,
         price: product.price,
       }));
-  
+      handleClick();
       navigate(`/menu/${id}`);
     }
   };

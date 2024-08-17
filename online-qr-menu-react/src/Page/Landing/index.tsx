@@ -33,6 +33,16 @@ const Landing: React.FC = () => {
 
   const [visible, setVisible] = useState(true);
   const [data, setData] = useState<CoffeeShop | null>(fakeData);
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
+
+  const triggerNotification = (message: string) => {
+    setNotificationMessage(message);
+    setShowNotification(true);
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 3000);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,7 +70,6 @@ const Landing: React.FC = () => {
   if (!data) return null;
   return (
     <div className="relative flex justify-center items-center ">
-      
     {visible && (
       <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-b from-[#fe562d] to-[#f58020] rounded-lg p-4 md:p-8">
       <div className="flex flex-col justify-center items-center space-y-6 md:space-y-8 text-center">
@@ -73,10 +82,15 @@ const Landing: React.FC = () => {
     <div
       className={`${visible ? 'opacity-0' : 'opacity-100'} transition-opacity justify-center items-center py-20`}
     >
+      {showNotification && (
+    <div className="fixed top-20 right-4 bg-orange-500 text-white p-4 rounded shadow">
+      {notificationMessage}
+    </div>
+  )}
       <NavigationBar id={id} />
       <div className="mx-auto px-4 overflow-x-hidden">
         <div className="w-screen max-w-screen-sm mx-auto grid grid-cols-1 gap-4">
-            <Outlet context={{ id }} />
+            <Outlet context={{ id, triggerNotification }} />
         </div>
       </div>
 

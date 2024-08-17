@@ -1,11 +1,24 @@
 import React, { useState } from 'react';
 import PaymentMethod from '../../Component/Payment';
 import PaymentAccept from '../../Component/Footer/Payment';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import PayPalButton from '../../Component/Layout/PaypalButton';
 import { RootState } from '../../Hook/rootReducer';
 import { useSelector } from 'react-redux';
 import QRCode from 'react-qr-code';
+import { API_ORDER } from '../../Service/Payment';
+import { CartItem } from '../../Hook/CartSlide';
+
+
+interface SendOrderItem {
+    productId: number;
+    productName: string;
+    quantity: number;
+    size: string;
+    option: string;
+    note: string;
+    price: number;
+}
 
 const Checkout: React.FC = () => {
     const [selectedMethod, setSelectedMethod] = useState<string>('Cash');
@@ -13,32 +26,57 @@ const Checkout: React.FC = () => {
     const [showPayPal, setShowPayPal] = useState<boolean>(false);
     const [qrCode, setQrCode] = useState<string | null>(null);
     const [qrCodeLink, setQrCodeLink] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
     const nav = useNavigate();
     const items = useSelector((state: RootState) => state.cart.items);
+    const { id } = useOutletContext<{ id: string }>();
+
+      
+    function convertCartToOrderItems(cartItems: CartItem[]): SendOrderItem[] {
+        const orderItems: SendOrderItem[] = [];
+
+        cartItems.forEach(item => {
+            item.sizeOptions.forEach(sizeOption => {
+                const orderItem: SendOrderItem = {
+                    productId: item.productId,
+                    productName: item.productName,
+                    quantity: sizeOption.quantity,
+                    size: sizeOption.size,
+                    option: sizeOption.option,
+                    note: item.note,
+                    price: item.price * sizeOption.quantity,
+                };
+                orderItems.push(orderItem);
+            });
+        });
+
+        return orderItems;
+    }
+      
 
     const subtotal = items.reduce((acc, item) => {
       const itemTotal = item.sizeOptions.reduce((itemAcc, sizeOption) => itemAcc + (sizeOption.quantity * item.price), 0);
       return acc + itemTotal;
     }, 0);
-  
+
     const discount = 0;
 
     const handleChange = async (method: string) => {
         setSelectedMethod(method);
-        if (method === 'PayPal') {
-            setAmount(subtotal - discount);
-            setShowPayPal(true);
-        } else if (method === 'QR') {
-            setAmount(subtotal - discount);
-            setShowPayPal(false);
+        setAmount(subtotal - discount);
+        setShowPayPal(method === 'PayPal');
+        
+        if (method === 'QR') {
             await generateQRCode(subtotal - discount);
         } else {
-            setShowPayPal(false);
+            setQrCode(null);
+            setQrCodeLink(null);
         }
     };
 
     const generateQRCode = async (amount: number) => {
         try {
+            setLoading(true);
             const response = await fetch('https://<vietqr-host>/<basepath>/api/qr/generate-customer', {
                 method: 'POST',
                 headers: {
@@ -47,48 +85,69 @@ const Checkout: React.FC = () => {
                 },
                 body: JSON.stringify({
                     bankCode: 'YOUR_BANK_CODE',
-                    bankAccount: 'YOUR_BANK_ACCOUNT', // Thay thế bằng tài khoản ngân hàng thực tế
-                    userBankName: 'YOUR_NAME', // Thay thế bằng tên của chủ tài khoản
+                    bankAccount: 'YOUR_BANK_ACCOUNT',
+                    userBankName: 'YOUR_NAME',
                     content: 'Payment for order',
-                    qrType: 0, // Tùy chọn loại mã QR: 0 cho mã QR động
+                    qrType: 0,
                     amount: amount,
-                    orderId: 'ORDER_ID', // Thay thế bằng mã ID giao dịch thực tế
+                    orderId: 'ORDER_ID',
                     transType: 'C',
-                    terminalCode: 'YOUR_TERMINAL_CODE', // Thay thế bằng mã cửa hàng thực tế
-                    serviceCode: 'YOUR_SERVICE_CODE', // Thay thế bằng mã dịch vụ thực tế
-                    sign: 'YOUR_SIGNATURE', // Thay thế bằng chữ ký thực tế (nếu cần)
-                    urlLink: 'YOUR_REDIRECT_URL' // Thay thế bằng URL cần chuyển hướng sau khi quét mã QR
+                    terminalCode: 'YOUR_TERMINAL_CODE',
+                    serviceCode: 'YOUR_SERVICE_CODE',
+                    sign: 'YOUR_SIGNATURE',
+                    urlLink: 'YOUR_REDIRECT_URL'
                 })
             });
             const data = await response.json();
-            setQrCode(data.qrCode); // Mã QR dạng string
-            setQrCodeLink(data.qrLink); // Mã QR dạng link
+            setQrCode(data.qrCode);
+            setQrCodeLink(data.qrLink);
         } catch (error) {
             console.error('Error generating QR code:', error);
             alert('Đã xảy ra lỗi khi tạo mã QR. Vui lòng thử lại.');
+        } finally {
+            setLoading(false);
         }
     };
 
     const handleCheckout = async () => {
         try {
+            let newOrderId = "order";
+
             switch (selectedMethod) {
                 case 'Cash':
+                    newOrderId = await API_ORDER(items, 'Cash');
                     alert('Thanh toán bằng tiền mặt thành công');
                     break;
                 case 'QR':
+                    newOrderId = await API_ORDER(items, 'QR');
                     alert('Thanh toán qua mã QR thành công');
                     break;
                 case 'PayPal':
                     setShowPayPal(false);
-                    alert('Thanh toán qua mã Paypal thành công');
-                    break;
-                case 'Bank':
-                    await fetch('/api/checkout/bank', { method: 'POST' });
-                    alert('Thanh toán qua chuyển khoản ngân hàng thành công');
+                    newOrderId = await API_ORDER(items, 'PayPal');
+                    alert('Thanh toán qua PayPal thành công');
                     break;
                 default:
                     throw new Error('Phương thức thanh toán không hợp lệ');
             }
+            const listOrder = convertCartToOrderItems(items);
+            console.log(listOrder);
+            const order = {
+                orderId: newOrderId,
+                listOrder,
+                subtotal,
+                discount,
+                status: 'pending',
+            };
+            
+            const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const updatedOrders = [...existingOrders, order];
+
+            localStorage.setItem('orders', JSON.stringify(updatedOrders));
+
+            localStorage.removeItem('cart'); 
+            
+            nav(`/menu/${id}/order-detail/${newOrderId}`);
         } catch (error) {
             console.error('Đã xảy ra lỗi khi thanh toán:', error);
             alert('Đã xảy ra lỗi khi thanh toán. Vui lòng thử lại.');
@@ -125,7 +184,11 @@ const Checkout: React.FC = () => {
                 </div>
             </div>
             <div className="w-full">
-                {showPayPal ? (
+                {loading ? (
+                    <div className="flex justify-center items-center">
+                        <p>Đang tạo mã QR, vui lòng chờ...</p>
+                    </div>
+                ) : showPayPal ? (
                     <PayPalButton amount={amount} onSuccess={handleCheckout} />
                 ) : (
                     <div>

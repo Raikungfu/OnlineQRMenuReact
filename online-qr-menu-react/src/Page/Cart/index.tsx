@@ -31,7 +31,7 @@ const Cart: React.FC = () => {
   };
 
   const handleCheckout = () => {
-    nav(`/menu/${id}/order`);
+    nav(`/menu/${id}/checkout`);
   };
 
   const handleCancel = () => {

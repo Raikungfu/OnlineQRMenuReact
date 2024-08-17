@@ -6,7 +6,7 @@ const Page404: React.FC = () => {
   const { id } = useOutletContext<{ id: string }>();
   
   return (
-    <main className="grid min-h-full place-items-center bg-white w-screen h-screen overflow-hidden">
+    <main className="grid place-items-center bg-white h-screen overflow-hidden">
       <div className="text-center">
         <h1 className="font-extrabold dark:text-red-600" content="404" />
         <h1
