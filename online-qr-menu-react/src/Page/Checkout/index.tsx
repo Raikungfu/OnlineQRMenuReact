@@ -6,9 +6,10 @@ import PayPalButton from '../../Component/Layout/PaypalButton';
 import { RootState } from '../../Hook/rootReducer';
 import { useSelector } from 'react-redux';
 import QRCode from 'react-qr-code';
+import axios from 'axios';
+import CryptoJS from 'crypto-js';
 import { API_ORDER } from '../../Service/Payment';
 import { CartItem } from '../../Hook/CartSlide';
-
 
 interface SendOrderItem {
     productId: number;
@@ -31,7 +32,6 @@ const Checkout: React.FC = () => {
     const items = useSelector((state: RootState) => state.cart.items);
     const { id } = useOutletContext<{ id: string }>();
 
-      
     function convertCartToOrderItems(cartItems: CartItem[]): SendOrderItem[] {
         const orderItems: SendOrderItem[] = [];
 
@@ -52,11 +52,10 @@ const Checkout: React.FC = () => {
 
         return orderItems;
     }
-      
 
     const subtotal = items.reduce((acc, item) => {
-      const itemTotal = item.sizeOptions.reduce((itemAcc, sizeOption) => itemAcc + (sizeOption.quantity * item.price), 0);
-      return acc + itemTotal;
+        const itemTotal = item.sizeOptions.reduce((itemAcc, sizeOption) => itemAcc + (sizeOption.quantity * item.price), 0);
+        return acc + itemTotal;
     }, 0);
 
     const discount = 0;
@@ -65,7 +64,7 @@ const Checkout: React.FC = () => {
         setSelectedMethod(method);
         setAmount(subtotal - discount);
         setShowPayPal(method === 'PayPal');
-        
+
         if (method === 'QR') {
             await generateQRCode(subtotal - discount);
         } else {
@@ -77,30 +76,36 @@ const Checkout: React.FC = () => {
     const generateQRCode = async (amount: number) => {
         try {
             setLoading(true);
-            const response = await fetch('https://<vietqr-host>/<basepath>/api/qr/generate-customer', {
-                method: 'POST',
+
+            const response = await axios.post('https://api-merchant.payos.vn/v2/payment-requests', {
+                orderCode: Date.now(),
+                amount,
+                description: 'Thanh toán',
+                cancelUrl: 'https://onlineqrmenuapp20240813144713.azurewebsites.net/cancel',
+                returnUrl: 'https://onlineqrmenuapp20240813144713.azurewebsites.net/success',
+                expiredAt: Math.floor(Date.now() / 1000) + 60,
+                signature: generateSignature({
+                    orderCode:  Date.now(),
+                    amount,
+                    description: 'Thanh toán',
+                    cancelUrl: 'https://onlineqrmenuapp20240813144713.azurewebsites.net/cancel',
+                    returnUrl: 'https://onlineqrmenuapp20240813144713.azurewebsites.net/success',
+                }),
+            }, {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer <token>'
+                    'x-api-key': 'f0e578e2-74d5-4dbd-a2f9-651f75d19e52',
+                    'x-client-id': 'd443c818-6824-4f30-ae35-4daf091b72bf',
                 },
-                body: JSON.stringify({
-                    bankCode: 'YOUR_BANK_CODE',
-                    bankAccount: 'YOUR_BANK_ACCOUNT',
-                    userBankName: 'YOUR_NAME',
-                    content: 'Payment for order',
-                    qrType: 0,
-                    amount: amount,
-                    orderId: 'ORDER_ID',
-                    transType: 'C',
-                    terminalCode: 'YOUR_TERMINAL_CODE',
-                    serviceCode: 'YOUR_SERVICE_CODE',
-                    sign: 'YOUR_SIGNATURE',
-                    urlLink: 'YOUR_REDIRECT_URL'
-                })
             });
-            const data = await response.json();
-            setQrCode(data.qrCode);
-            setQrCodeLink(data.qrLink);
+
+            const { data } = response;
+            if (data.code === '00' && data.desc === 'success') {
+                setQrCode(data.data.qrCode);
+                setQrCodeLink(data.data.checkoutUrl);
+            } else {
+                alert('Tạo mã QR không thành công: ' + data.desc);
+            }
+
         } catch (error) {
             console.error('Error generating QR code:', error);
             alert('Đã xảy ra lỗi khi tạo mã QR. Vui lòng thử lại.');
@@ -109,22 +114,34 @@ const Checkout: React.FC = () => {
         }
     };
 
+    const generateSignature = (params: {
+        orderCode: number;
+        amount: number;
+        description: string;
+        cancelUrl: string;
+        returnUrl: string;
+    }): string => {
+        const secretKey = import.meta.env.VITE_CHECKSUM_KEY;
+        const data = `amount=${params.amount}&cancelUrl=${params.cancelUrl}&description=${params.description}&orderCode=${params.orderCode}&returnUrl=${params.returnUrl}`;
+        return CryptoJS.HmacSHA256(data, secretKey).toString(CryptoJS.enc.Hex);
+    };
+
     const handleCheckout = async () => {
         try {
             let newOrderId = "order";
 
             switch (selectedMethod) {
                 case 'Cash':
-                    newOrderId = await API_ORDER(items, 'Cash');
+                    // newOrderId = await API_ORDER(items, 'Cash');
                     alert('Thanh toán bằng tiền mặt thành công');
                     break;
                 case 'QR':
-                    newOrderId = await API_ORDER(items, 'QR');
+                    // newOrderId = await API_ORDER(items, 'QR');
                     alert('Thanh toán qua mã QR thành công');
                     break;
                 case 'PayPal':
                     setShowPayPal(false);
-                    newOrderId = await API_ORDER(items, 'PayPal');
+                    // newOrderId = await API_ORDER(items, 'PayPal');
                     alert('Thanh toán qua PayPal thành công');
                     break;
                 default:
@@ -139,14 +156,14 @@ const Checkout: React.FC = () => {
                 discount,
                 status: 'pending',
             };
-            
+
             const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
             const updatedOrders = [...existingOrders, order];
 
             localStorage.setItem('orders', JSON.stringify(updatedOrders));
 
-            localStorage.removeItem('cart'); 
-            
+            localStorage.removeItem('cart');
+
             nav(`/menu/${id}/order-detail/${newOrderId}`);
         } catch (error) {
             console.error('Đã xảy ra lỗi khi thanh toán:', error);
