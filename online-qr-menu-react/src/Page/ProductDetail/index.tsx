@@ -31,7 +31,7 @@ const defaultProduct: Product = {
   size: '',
   type: '',
   options: [],
-  quantity: 0
+  quantity: 1
 };
 
 const ProductDetail: React.FC = () => {
@@ -59,7 +59,7 @@ const ProductDetail: React.FC = () => {
   }, [id]);
 
   const handleClick = () => {
-    triggerNotification(`Product ${product.name} x ${product.quantity} has been added to cart successfully!`);
+    triggerNotification(`Product ${product.name} x ${product.quantity > 0 ? product.quantity : 1} has been added to cart successfully!`);
   };
 
   const handleSizeSelect = (size: string) => {
@@ -105,10 +105,10 @@ const ProductDetail: React.FC = () => {
   const handleQuantityChange = (quantity: number) => {
     if (product) {
       setProduct(prevProduct =>
-        prevProduct ? { ...prevProduct, quantity } : prevProduct
+        prevProduct ? { ...prevProduct, quantity: quantity > 0 ? quantity : 1 } : prevProduct
       );
     }
-  };
+  };  
 
   const handleAddToCart = () => {
     if (product) {
