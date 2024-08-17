@@ -93,8 +93,8 @@ const Checkout: React.FC = () => {
                 }),
             }, {
                 headers: {
-                    'x-api-key': 'f0e578e2-74d5-4dbd-a2f9-651f75d19e52',
-                    'x-client-id': 'd443c818-6824-4f30-ae35-4daf091b72bf',
+                    'x-api-key': import.meta.env.VITE_API_KEY,
+                    'x-client-id': import.meta.env.VITE_PAYOS_CLIENT_ID,
                 },
             });
 
