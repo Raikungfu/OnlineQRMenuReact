@@ -11,7 +11,7 @@ import CryptoJS from 'crypto-js';
 import { API_ORDER } from '../../Service/Payment';
 import { CartItem } from '../../Hook/CartSlide';
 
-interface SendOrderItem {
+export interface SendOrderItem {
     productId: number;
     productName: string;
     quantity: number;
@@ -130,25 +130,7 @@ const Checkout: React.FC = () => {
         try {
             let newOrderId = "order";
 
-            switch (selectedMethod) {
-                case 'Cash':
-                    // newOrderId = await API_ORDER(items, 'Cash');
-                    alert('Thanh toán bằng tiền mặt thành công');
-                    break;
-                case 'QR':
-                    // newOrderId = await API_ORDER(items, 'QR');
-                    alert('Thanh toán qua mã QR thành công');
-                    break;
-                case 'PayPal':
-                    setShowPayPal(false);
-                    // newOrderId = await API_ORDER(items, 'PayPal');
-                    alert('Thanh toán qua PayPal thành công');
-                    break;
-                default:
-                    throw new Error('Phương thức thanh toán không hợp lệ');
-            }
             const listOrder = convertCartToOrderItems(items);
-            console.log(listOrder);
             const order = {
                 orderId: newOrderId,
                 listOrder,
@@ -157,6 +139,23 @@ const Checkout: React.FC = () => {
                 status: 'pending',
             };
 
+            switch (selectedMethod) {
+                case 'Cash':
+                    newOrderId = await API_ORDER(listOrder, 'Cash');
+                    alert('Thanh toán bằng tiền mặt thành công');
+                    break;
+                case 'QR':
+                    newOrderId = await API_ORDER(listOrder, 'QR');
+                    alert('Thanh toán qua mã QR thành công');
+                    break;
+                case 'PayPal':
+                    setShowPayPal(false);
+                    newOrderId = await API_ORDER(listOrder, 'PayPal');
+                    alert('Thanh toán qua PayPal thành công');
+                    break;
+                default:
+                    throw new Error('Phương thức thanh toán không hợp lệ');
+            }
             const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
             const updatedOrders = [...existingOrders, order];
 
