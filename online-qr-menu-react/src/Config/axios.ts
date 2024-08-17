@@ -7,7 +7,7 @@ interface AxiosApiResponse<T> {
 }
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: 'https://localhost:7195',
 });
 
 const AxiosApi = {
