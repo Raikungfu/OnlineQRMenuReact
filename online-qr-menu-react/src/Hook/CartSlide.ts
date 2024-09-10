@@ -1,8 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface SizeOption {
-  size: string;
   option: string;
+  price: number;
   quantity: number;
 }
 
@@ -20,27 +20,29 @@ interface CartState {
 }
 
 const initialState: CartState = {
-  items: JSON.parse(localStorage.getItem('cart') || '[]'),
+  items: JSON.parse(localStorage.getItem("cart") || "[]"),
 };
 
 const saveCartToLocalStorage = (cartItems: CartItem[]) => {
-  localStorage.setItem('cart', JSON.stringify(cartItems));
+  localStorage.setItem("cart", JSON.stringify(cartItems));
 };
 
 const cartSlice = createSlice({
-  name: 'cart',
+  name: "cart",
   initialState,
   reducers: {
     addToCart: (state, action: PayloadAction<CartItem>) => {
       const newItem = action.payload;
-      const existingItem = state.items.find(item => item.productId === newItem.productId);
-      
+      const existingItem = state.items.find(
+        (item) => item.productId === newItem.productId
+      );
+
       if (existingItem) {
         existingItem.quantity += newItem.quantity;
 
-        newItem.sizeOptions.forEach(newSizeOption => {
+        newItem.sizeOptions.forEach((newSizeOption) => {
           const existingSizeOption = existingItem.sizeOptions.find(
-            sizeOption => sizeOption.size === newSizeOption.size && sizeOption.option === newSizeOption.option
+            (sizeOption) => sizeOption.option === newSizeOption.option
           );
 
           if (existingSizeOption) {
@@ -58,30 +60,86 @@ const cartSlice = createSlice({
       saveCartToLocalStorage(state.items);
     },
     removeFromCart: (state, action: PayloadAction<number>) => {
-      state.items = state.items.filter(item => item.productId !== action.payload);
+      state.items = state.items.filter(
+        (item) => item.productId !== action.payload
+      );
       saveCartToLocalStorage(state.items);
     },
-    updateQuantity: (state, action: PayloadAction<{ productId: number; quantity: number }>) => {
-      const existingItem = state.items.find(item => item.productId === action.payload.productId);
+    removeOptionItemFromCart: (
+      state,
+      action: PayloadAction<{ productId: number; option: string }>
+    ) => {
+      const { productId, option } = action.payload;
+
+      const item = state.items.find((item) => item.productId === productId);
+
+      if (item) {
+        item.sizeOptions = item.sizeOptions
+          .map((sizeOption) => {
+            if (sizeOption.option === option) {
+              return {
+                ...sizeOption,
+                quantity: 0,
+              };
+            }
+            return sizeOption;
+          })
+          .filter((sizeOption) => sizeOption.quantity > 0);
+
+        if (item.sizeOptions.length === 0) {
+          state.items = state.items.filter(
+            (item) => item.productId !== productId
+          );
+        }
+      }
+
+      saveCartToLocalStorage(state.items);
+    },
+    updateQuantity: (
+      state,
+      action: PayloadAction<{ productId: number; quantity: number }>
+    ) => {
+      const existingItem = state.items.find(
+        (item) => item.productId === action.payload.productId
+      );
       if (existingItem) {
         existingItem.quantity = action.payload.quantity;
         saveCartToLocalStorage(state.items);
       }
     },
-    updateSizeOptionQuantity: (state, action: PayloadAction<{ productId: number; size: string; option: string; quantity: number }>) => {
-      const { productId, size, option, quantity } = action.payload;
-      const existingItem = state.items.find(item => item.productId === productId);
-      
-      if (existingItem) {
-        const existingSizeOption = existingItem.sizeOptions.find(
-          sizeOption => sizeOption.size === size && sizeOption.option === option
-        );
+    updateSizeOptionQuantity: (
+      state,
+      action: PayloadAction<{
+        productId: number;
+        option: string;
+        quantity: number;
+      }>
+    ) => {
+      const { productId, option, quantity } = action.payload;
 
-        if (existingSizeOption) {
-          existingSizeOption.quantity = quantity;
-          saveCartToLocalStorage(state.items);
+      const item = state.items.find((item) => item.productId === productId);
+
+      if (item) {
+        item.sizeOptions = item.sizeOptions
+          .map((sizeOption) => {
+            if (sizeOption.option === option) {
+              return {
+                ...sizeOption,
+                quantity: quantity,
+              };
+            }
+            return sizeOption;
+          })
+          .filter((sizeOption) => sizeOption.quantity > 0);
+
+        if (item.sizeOptions.length === 0) {
+          state.items = state.items.filter(
+            (item) => item.productId !== productId
+          );
         }
       }
+
+      saveCartToLocalStorage(state.items);
     },
     clearCart: (state) => {
       state.items = [];
@@ -90,5 +148,11 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, removeFromCart, updateQuantity, updateSizeOptionQuantity, clearCart } = cartSlice.actions;
+export const {
+  addToCart,
+  removeFromCart,
+  updateQuantity,
+  updateSizeOptionQuantity,
+  clearCart,
+} = cartSlice.actions;
 export default cartSlice.reducer;

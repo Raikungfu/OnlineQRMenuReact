@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface FooterProps {
   onCheckout: () => void;
@@ -7,7 +7,12 @@ interface FooterProps {
   cancelText: string;
 }
 
-const PaymentAccept: React.FC<FooterProps> = ({ onCheckout, onCancel, checkoutText, cancelText }) => {
+const PaymentAccept: React.FC<FooterProps> = ({
+  onCheckout,
+  onCancel,
+  checkoutText,
+  cancelText,
+}) => {
   return (
     <div className="w-full bg-white shadow-lg flex items-center justify-between p-4 bottom-0 left-0">
       <button
@@ -18,7 +23,7 @@ const PaymentAccept: React.FC<FooterProps> = ({ onCheckout, onCancel, checkoutTe
       </button>
       <button
         onClick={onCheckout}
-        className="w-full ml-2 bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-blue-700"
+        className="w-full ml-2 bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-orange-700"
       >
         {checkoutText}
       </button>

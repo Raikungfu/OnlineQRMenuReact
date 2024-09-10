@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer utilities {
+
     @keyframes scrollLeft {
         0% {
             transform: translateX(0);
@@ -16,4 +18,15 @@
     .animate-scroll-left {
         animation: scrollLeft 10s linear infinite;
     }
+}
+
+    
+.hidden-scroll-bar {
+    overflow-x: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.hidden-scroll-bar::-webkit-scrollbar {
+    display: none;
 }

@@ -1,7 +1,7 @@
 export interface Category {
-    id: number;
-    name: string;
-    image: string;
-    description?: string;
-  }
-  
+  CategoryId: number;
+  Name: string;
+  Image: string;
+  Description?: string;
+  isSelected: boolean;
+}

@@ -1,30 +1,39 @@
-import React from 'react';
+import React from "react";
 
 interface CategoryCardProps {
   imgSrc: string;
-  title: string;
-  width: number;
+  name: string;
+  description?: string;
   height: number;
+  isSelected: boolean;
+  selectCategory: () => {};
 }
-const CategoryCard: React.FC<CategoryCardProps> = ({ imgSrc, title, width, height }) => (
+const CategoryCard: React.FC<CategoryCardProps> = ({
+  imgSrc,
+  name,
+  description,
+  height,
+  isSelected,
+  selectCategory,
+}) => (
   <div
-  className={`w-[${width}px] h-[${height}px] bg-white rounded-[20px] border overflow-hidden flex flex-col p-1`}
->
-  <img
-    className="w-full h-full object-cover rounded-[20px]"
-    src={imgSrc}
-    alt={title}
-  />
-  <div className="relative">
-    <div
-      className="text-black text-base font-medium bg-white bg-opacity-75 p-1 rounded-md overflow-hidden text-ellipsis whitespace-nowrap"
-      title={title}
-    >
-      {title}
+    className={`w-[20%] h-[${height}px] rounded-[20px] border overflow-hidden flex flex-col p-1 ${
+      isSelected ? "bg-orange-200" : ""
+    }`}
+    onClick={() => selectCategory()}
+    title={`${name}\n${description}`}
+  >
+    <img
+      className="w-full h-full object-cover rounded-[20px]"
+      src={imgSrc}
+      alt={name}
+    />
+    <div className="relative">
+      <div className="text-black text-base font-medium p-1 rounded-md overflow-hidden text-ellipsis whitespace-nowrap">
+        {name}
+      </div>
     </div>
   </div>
-</div>
-
 );
-  
+
 export default CategoryCard;
