@@ -4,12 +4,12 @@ import PaymentAccept from "../../Component/Footer/Payment";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import PayPalButton from "../../Component/Layout/PaypalButton";
 import { RootState } from "../../Hook/rootReducer";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import QRCode from "react-qr-code";
 import axios from "axios";
 import CryptoJS from "crypto-js";
 import { API_ORDER } from "../../Service/Payment";
-import { CartItem } from "../../Hook/CartSlide";
+import { CartItem, clearCart } from "../../Hook/CartSlide";
 import { OrderResponse } from "../../Type/Order";
 
 export interface SendOrderItem {
@@ -28,6 +28,7 @@ const Checkout: React.FC = () => {
   const [qrCodeLink, setQrCodeLink] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const nav = useNavigate();
+  const dispatch = useDispatch();
   const items = useSelector((state: RootState) => state.cart.items);
   const { shopId, tableId } = useOutletContext<{
     shopId: string;
@@ -155,7 +156,6 @@ const Checkout: React.FC = () => {
             shopId,
             tableId
           )) as unknown as OrderResponse;
-          alert("Thanh toán bằng tiền mặt thành công");
           break;
         case "QR":
           orderRes = (await API_ORDER(
@@ -164,7 +164,6 @@ const Checkout: React.FC = () => {
             shopId,
             tableId
           )) as unknown as OrderResponse;
-          alert("Thanh toán qua mã QR thành công");
           break;
         case "PayPal":
           setShowPayPal(false);
@@ -174,7 +173,6 @@ const Checkout: React.FC = () => {
             shopId,
             tableId
           )) as unknown as OrderResponse;
-          alert("Thanh toán qua PayPal thành công");
           break;
         default:
           throw new Error("Phương thức thanh toán không hợp lệ");
@@ -198,7 +196,7 @@ const Checkout: React.FC = () => {
 
         localStorage.setItem("orders", JSON.stringify(updatedOrders));
 
-        localStorage.removeItem("cart");
+        dispatch(clearCart());
       }
     } catch (error) {
       console.error("Đã xảy ra lỗi khi thanh toán:", error);

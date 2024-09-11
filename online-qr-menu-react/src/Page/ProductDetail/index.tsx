@@ -20,9 +20,10 @@ const ProductDetail: React.FC = () => {
   useEffect(() => {
     const getProductDetail = async () => {
       try {
-        const productData = (await API_GET_PRODUCT_DETAIL(
-          productId
-        )) as unknown as Product;
+        const productData = (await API_GET_PRODUCT_DETAIL({
+          shopId,
+          productId,
+        })) as unknown as Product;
 
         setProduct(productData);
         console.log(product);
@@ -78,11 +79,13 @@ const ProductDetail: React.FC = () => {
 
   const handleQuantityChange = (quantity: number) => {
     if (product) {
+      console.log(quantity);
       setProduct((prevProduct) =>
         prevProduct
-          ? { ...prevProduct, quantity: quantity > 0 ? quantity : 1 }
+          ? { ...prevProduct, Quantity: quantity > 0 ? quantity : 1 }
           : prevProduct
       );
+      console.log(product);
     }
   };
 

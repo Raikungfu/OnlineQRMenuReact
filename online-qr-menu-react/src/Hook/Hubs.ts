@@ -26,17 +26,16 @@ const useSignalR = ({
       .configureLogging(signalR.LogLevel.Information)
       .build();
 
-    connection.on(
-      "ReceiveOrderStatus",
-      (orderId, status, updateDate, paymentMethod, orderDate) => {
-        console.log(
-          "Received Order Status: ",
-          orderId,
-          status,
-          updateDate,
-          paymentMethod,
-          orderDate
-        );
+    connection.on("ReceiveOrderStatus", (orderProcessDto) => {
+      if (!orderProcessDto) {
+        console.error("Received undefined or null data from server");
+        return;
+      }
+
+      const { orderId, status, updateDate, paymentMethod, orderDate } =
+        orderProcessDto;
+
+      if (orderId && status && updateDate && paymentMethod && orderDate) {
         onOrderStatusUpdate(
           orderId,
           status,
@@ -44,8 +43,10 @@ const useSignalR = ({
           paymentMethod,
           orderDate
         );
+      } else {
+        console.error("Some properties are undefined: ", orderProcessDto);
       }
-    );
+    });
 
     connection.on("ReceiveServiceCall", (OrderId) => {
       console.log("Received Service Call for Order ID: ", OrderId);

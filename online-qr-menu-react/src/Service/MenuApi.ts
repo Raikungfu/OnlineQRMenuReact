@@ -39,9 +39,9 @@ export const API_GET_MENU_SEARCH = <T>(
 };
 
 export const API_GET_PRODUCT_DETAIL = <T>(
-  id: FormDataOrOther<T>
+  data: FormDataOrOther<T>
 ): Promise<T> => {
-  return AxiosApi.get<T>(`/api/menu/item/${id}`)
+  return AxiosApi.get<T>(`/api/menu/item`, data)
     .then((response) => {
       if (response.data) {
         return response.data;

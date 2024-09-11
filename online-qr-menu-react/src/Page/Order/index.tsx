@@ -33,48 +33,51 @@ const OrderList: React.FC = () => {
         <div className="text-center text-gray-500">Không có đơn hàng nào.</div>
       ) : (
         <ul className="space-y-4">
-          {orders.map((order) => (
-            <li
-              key={order.orderId}
-              className="p-4 bg-white border border-gray-300 rounded-lg shadow-sm cursor-pointer hover:bg-gray-100"
-              onClick={() => handleOrderClick(order.orderId)}
-            >
-              <div className="flex justify-between items-center  border-b border-gray-200 pb-2">
-                <div className="text-sm font-semibold text-gray-600">{`Phương thức thanh toán`}</div>
-                <div className={`text-sm font-semibold text-gray-600`}>
-                  {order.paymentMethod}
+          {orders
+            .slice()
+            .reverse()
+            .map((order) => (
+              <li
+                key={order.orderId}
+                className="p-4 bg-white border border-gray-300 rounded-lg shadow-sm cursor-pointer hover:bg-gray-100"
+                onClick={() => handleOrderClick(order.orderId)}
+              >
+                <div className="flex justify-between items-center  border-b border-gray-200 pb-2">
+                  <div className="text-sm font-semibold text-gray-600">{`Phương thức thanh toán`}</div>
+                  <div className={`text-sm font-semibold text-gray-600`}>
+                    {order.paymentMethod}
+                  </div>
                 </div>
-              </div>
-              <div className="flex justify-between items-center py-2">
-                <div className="text-lg font-medium">{`Đơn hàng ${order.orderId}`}</div>
-                <div
-                  className={`text-sm font-semibold ${
-                    order.status === "Confirm"
-                      ? "text-green-500"
-                      : "text-red-500"
-                  }`}
-                >
-                  {order.status}
+                <div className="flex justify-between items-center py-2">
+                  <div className="text-lg font-medium">{`Đơn hàng ${order.orderId}`}</div>
+                  <div
+                    className={`text-sm font-semibold ${
+                      order.status === "Confirm"
+                        ? "text-green-500"
+                        : "text-red-500"
+                    }`}
+                  >
+                    {order.status}
+                  </div>
                 </div>
-              </div>
-              <div className="mt-2 flex justify-between">
-                <div className="text-gray-600">Tạm tính</div>
-                <div className="font-semibold">
-                  {order.subtotal.toFixed(2)} VNĐ
+                <div className="mt-2 flex justify-between">
+                  <div className="text-gray-600">Tạm tính</div>
+                  <div className="font-semibold">
+                    {order.subtotal.toFixed(2)} VNĐ
+                  </div>
                 </div>
-              </div>
-              <div className="flex justify-between">
-                <div className="text-gray-600">Giảm giá</div>
-                <div className="font-semibold">
-                  {order.discount.toFixed(2)} VNĐ
+                <div className="flex justify-between">
+                  <div className="text-gray-600">Giảm giá</div>
+                  <div className="font-semibold">
+                    {order.discount.toFixed(2)} VNĐ
+                  </div>
                 </div>
-              </div>
-              <div className="flex justify-between font-semibold mt-2">
-                <div>Tổng cộng</div>
-                <div>{(order.subtotal - order.discount).toFixed(2)} VNĐ</div>
-              </div>
-            </li>
-          ))}
+                <div className="flex justify-between font-semibold mt-2">
+                  <div>Tổng cộng</div>
+                  <div>{(order.subtotal - order.discount).toFixed(2)} VNĐ</div>
+                </div>
+              </li>
+            ))}
         </ul>
       )}
     </div>

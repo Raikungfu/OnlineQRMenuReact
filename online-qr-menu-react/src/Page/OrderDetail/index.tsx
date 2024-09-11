@@ -69,7 +69,7 @@ const OrderDetail: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col w-full max-w-md h-auto p-4 space-y-5">
+    <div className="flex flex-col p-4 space-y-5">
       <div className="w-full h-5 relative flex justify-between">
         <div
           className={`${
