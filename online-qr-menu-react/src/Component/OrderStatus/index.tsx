@@ -20,8 +20,7 @@ const OrderStatusComponent: React.FC<OrderStatusProps> = ({
     orderId: number,
     status: string,
     updateDate: Date,
-    paymentMethod: string,
-    orderDate: Date
+    paymentMethod: string
   ) => {
     setOrderId(orderId);
     triggerNotification(

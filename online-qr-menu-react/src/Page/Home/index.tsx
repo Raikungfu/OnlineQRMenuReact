@@ -117,6 +117,8 @@ const Home: React.FC = () => {
   const handleSearchChange = (value: string) => {
     setSearchQuery(value);
     debouncedSearchProduct(value);
+
+    console.log(searchQuery);
   };
 
   return (
