@@ -17,14 +17,15 @@ const OrderStatusComponent: React.FC<OrderStatusProps> = ({
   const nav = useNavigate();
 
   const handleOrderStatusUpdate = (
-    OrderId: number,
+    orderId: number,
     status: string,
-    UpdateDate: Date,
-    PaymentMethod: string
+    updateDate: Date,
+    paymentMethod: string,
+    orderDate: Date
   ) => {
-    setOrderId(OrderId);
+    setOrderId(orderId);
     triggerNotification(
-      `Order ID: ${OrderId}, Status: ${status} \nPayment method: ${UpdateDate}\n Time: ${PaymentMethod}`
+      `Order ID: ${orderId}, Status: ${status} \nPayment method: ${updateDate}\n Time: ${paymentMethod}`
     );
   };
 

@@ -4,10 +4,11 @@ import { API_BASE_URL } from "../Type/constant";
 
 interface UseSignalRProps {
   onOrderStatusUpdate: (
-    OrderId: number,
+    orderId: number,
     status: string,
-    UpdateDate: Date,
-    PaymentMethod: string
+    updateDate: Date,
+    paymentMethod: string,
+    orderDate: Date
   ) => void;
   onServiceCall: (OrderId: number) => void;
 }
@@ -27,15 +28,22 @@ const useSignalR = ({
 
     connection.on(
       "ReceiveOrderStatus",
-      (OrderId, status, UpdateDate, PaymentMethod) => {
+      (orderId, status, updateDate, paymentMethod, orderDate) => {
         console.log(
           "Received Order Status: ",
-          OrderId,
+          orderId,
           status,
-          UpdateDate,
-          PaymentMethod
+          updateDate,
+          paymentMethod,
+          orderDate
         );
-        onOrderStatusUpdate(OrderId, status, UpdateDate, PaymentMethod);
+        onOrderStatusUpdate(
+          orderId,
+          status,
+          updateDate,
+          paymentMethod,
+          orderDate
+        );
       }
     );
 

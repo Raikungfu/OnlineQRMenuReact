@@ -6,8 +6,6 @@ interface ProductCardProps {
   name: string;
   description: string;
   price: number;
-  width: number;
-  height: number;
   productId: number;
 }
 
@@ -16,8 +14,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
   name,
   description,
   price,
-  width,
-  height,
   productId,
 }) => {
   const navigate = useNavigate();
@@ -28,11 +24,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <div
-      className={`w-[${width}px] h-[${height}px] bg-white rounded-[20px] shadow overflow-hidden flex flex-col justify-between`}
+      className={`w-full h-[360px] bg-white rounded-[20px] shadow overflow-hidden flex flex-col justify-between`}
       title={`${name}\n${description}`}
     >
       <img className="w-full h-[70%] object-cover" src={imgSrc} alt={name} />
-      <div className="p-2  h-[30%] flex flex-col justify-between">
+      <div className="p-2 h-[30%] flex flex-col justify-between">
         <div className="text-black text-base font-medium">{price}</div>
         <div className="text-black text-sm font-medium overflow-hidden text-ellipsis whitespace-nowrap">
           {name}

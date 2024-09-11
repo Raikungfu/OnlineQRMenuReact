@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import CategoryCard from "../../Component/CategoryCard";
 import SearchBar from "../../Component/SearchBar";
 import ProductCard from "../../Component/ProductCard";
@@ -8,12 +8,32 @@ import { useParams } from "react-router-dom";
 import {
   API_GET_CATEGORIES_BY_SHOPID,
   API_GET_MENU_BY_SHOPID,
+  API_GET_MENU_SEARCH,
 } from "../../Service/MenuApi";
+
+const useDebounce = (callback: (value: string) => void, delay: number) => {
+  const timerRef = useRef<number | null>(null);
+
+  const debounce = useCallback(
+    (value: string) => {
+      if (timerRef.current !== null) {
+        clearTimeout(timerRef.current);
+      }
+      timerRef.current = window.setTimeout(() => {
+        callback(value);
+      }, delay);
+    },
+    [callback, delay]
+  );
+
+  return debounce;
+};
 
 const Home: React.FC = () => {
   const { shopId } = useParams<{ shopId: string }>();
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,6 +90,35 @@ const Home: React.FC = () => {
     }
   };
 
+  const searchProduct = async (searchQuery: string) => {
+    try {
+      const categoryId = categories
+        .filter((x) => x.isSelected)
+        .map((x) => x.CategoryId)
+        .shift();
+      const productsData = await API_GET_MENU_SEARCH({
+        shopId,
+        searchQuery: searchQuery ?? "",
+        categoryId,
+      });
+
+      if (productsData) {
+        var products = productsData as unknown as Product[];
+        setProducts(products);
+      }
+    } catch (error) {
+      console.error("Error fetching home data:", error);
+      alert(error);
+    }
+  };
+
+  const debouncedSearchProduct = useDebounce(searchProduct, 500);
+
+  const handleSearchChange = (value: string) => {
+    setSearchQuery(value);
+    debouncedSearchProduct(value);
+  };
+
   return (
     <div className="w-full max-w-full sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden flex flex-col space-y-6 p-4">
       <div className="w-full flex flex-nowrap hidden-scroll-bar">
@@ -90,7 +139,7 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      <SearchBar />
+      <SearchBar onSearchChange={handleSearchChange} />
 
       <div className="mt-2 flex-grow">
         <div className="grid grid-cols-2 gap-4">
@@ -101,8 +150,6 @@ const Home: React.FC = () => {
               name={product.Name}
               description={product.Description}
               price={product.Price}
-              width={105}
-              height={105}
               productId={product.MenuItemId}
             />
           ))}
