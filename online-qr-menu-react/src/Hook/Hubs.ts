@@ -2,6 +2,16 @@ import { useEffect } from "react";
 import * as signalR from "@microsoft/signalr";
 import { API_BASE_URL } from "../Type/constant";
 
+const generateUUID = () => {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+};
+
+var id = "";
+
 interface UseSignalRProps {
   onOrderStatusUpdate: (
     orderId: number,
@@ -18,11 +28,23 @@ const useSignalR = ({
   onServiceCall,
 }: UseSignalRProps) => {
   useEffect(() => {
+    let deviceId = localStorage.getItem("deviceId");
+    if (!deviceId) {
+      deviceId = generateUUID();
+      localStorage.setItem("deviceId", deviceId);
+    }
+
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl(`${API_BASE_URL}/AppHub/order`, {
-        skipNegotiation: true,
-        transport: signalR.HttpTransportType.WebSockets,
-      })
+      .withUrl(
+        `${API_BASE_URL}/AppHub/order?deviceId=${encodeURIComponent(
+          deviceId
+        )}&role=${encodeURIComponent("customer")}&id=${encodeURIComponent(id)}`,
+        {
+          skipNegotiation: true,
+          transport: signalR.HttpTransportType.WebSockets,
+          accessTokenFactory: () => deviceId,
+        }
+      )
       .configureLogging(signalR.LogLevel.Information)
       .build();
 
