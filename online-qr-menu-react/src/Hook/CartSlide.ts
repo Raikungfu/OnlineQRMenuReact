@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface SizeOption {
   option: string;
   price: number;
+  cost: number;
   quantity: number;
 }
 
@@ -13,6 +14,7 @@ export interface CartItem {
   sizeOptions: SizeOption[];
   note: string;
   price: number;
+  cost: number;
 }
 
 interface CartState {

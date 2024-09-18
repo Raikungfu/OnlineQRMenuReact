@@ -93,6 +93,7 @@ const ProductDetail: React.FC = () => {
     if (product) {
       const optionsMap: { [key: string]: number } = {};
       let totalPrice = 0;
+      let totalCost = 0;
 
       product.CustomizationGroups.forEach((group) =>
         group.Customizations.forEach((option) => {
@@ -100,6 +101,7 @@ const ProductDetail: React.FC = () => {
             if (!optionsMap[option.Name]) {
               optionsMap[option.Name] = option.AdditionalCost;
               totalPrice += option.AdditionalCost;
+              totalCost += option.Cost;
             }
           }
         })
@@ -115,6 +117,7 @@ const ProductDetail: React.FC = () => {
           option: optionsString,
           price: totalPrice,
           quantity: product.Quantity > 0 ? product.Quantity : 1,
+          cost: totalCost,
         },
       ];
 
@@ -126,6 +129,7 @@ const ProductDetail: React.FC = () => {
           sizeOptions,
           note: product.Note || "",
           price: product.Price,
+          cost: product.Cost,
         })
       );
 
@@ -148,6 +152,7 @@ const ProductDetail: React.FC = () => {
                 groupId: group.CustomizationGroupId,
                 option: c.Name,
                 price: c.AdditionalCost,
+                cost: c.Cost,
                 isSelected: c.isSelected || false,
               }))
             )}

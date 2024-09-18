@@ -4,6 +4,7 @@ export interface Product {
   Image: string;
   Description: string;
   Price: number;
+  Cost: number;
   Type: string;
   CoffeeShopId: number;
   CategoryId: number;
@@ -23,5 +24,6 @@ export interface Customization {
   Name: string;
   Description: string;
   AdditionalCost: number;
+  Cost: number;
   isSelected: boolean;
 }

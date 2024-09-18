@@ -18,6 +18,7 @@ export interface SendOrderItem {
   sizeOptions: string;
   note: string;
   price: number;
+  cost: number;
 }
 
 const Checkout: React.FC = () => {
@@ -38,6 +39,7 @@ const Checkout: React.FC = () => {
   function convertCartToOrderItems(cartItems: CartItem[]): SendOrderItem[] {
     const orderItems: SendOrderItem[] = [];
 
+    console.log(cartItems);
     cartItems.forEach((item) => {
       item.sizeOptions.forEach((sizeOption) => {
         const orderItem: SendOrderItem = {
@@ -46,6 +48,7 @@ const Checkout: React.FC = () => {
           sizeOptions: sizeOption.option,
           note: item.note,
           price: item.price + sizeOption.price,
+          cost: item.cost + sizeOption.cost,
         };
         orderItems.push(orderItem);
       });

@@ -8,6 +8,7 @@ interface ProductCardProps {
   options: {
     option: string;
     price: number;
+    cost: number;
     optionId: number;
     groupId: number;
     isSelected: boolean;
