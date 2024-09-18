@@ -8,6 +8,8 @@ export const API_ORDER = (
   paymentMethod: string,
   coffeeShopId: string,
   tableId: string,
+  deviceId: string,
+  paymentStatus: string,
   userId?: string
 ): Promise<any> => {
   return AxiosApi.post("/api/order", {
@@ -15,6 +17,8 @@ export const API_ORDER = (
     paymentMethod,
     coffeeShopId,
     tableId,
+    deviceId,
+    paymentStatus,
     userId,
   })
     .then((response) => {

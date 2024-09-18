@@ -69,7 +69,7 @@ const Checkout: React.FC = () => {
     setAmount(subtotal - discount);
     setShowPayPal(method === "PayPal");
 
-    if (method === "QR") {
+    if (method === "QR - Transfer") {
       await generateQRCode(subtotal - discount);
     } else {
       setQrCode(null);
@@ -147,6 +147,9 @@ const Checkout: React.FC = () => {
       const listOrder = convertCartToOrderItems(items);
 
       let orderRes;
+      let deviceId = localStorage.getItem("deviceId") ?? "";
+
+      let paymentStatus;
 
       switch (selectedMethod) {
         case "Cash":
@@ -154,15 +157,19 @@ const Checkout: React.FC = () => {
             listOrder,
             "Cash",
             shopId,
-            tableId
+            tableId,
+            deviceId,
+            (paymentStatus = "NOT PAID")
           )) as unknown as OrderResponse;
           break;
-        case "QR":
+        case "QR - Transfer":
           orderRes = (await API_ORDER(
             listOrder,
-            "QR",
+            "QR - Transfer",
             shopId,
-            tableId
+            tableId,
+            deviceId,
+            (paymentStatus = "PAID")
           )) as unknown as OrderResponse;
           break;
         case "PayPal":
@@ -171,7 +178,9 @@ const Checkout: React.FC = () => {
             listOrder,
             "PayPal",
             shopId,
-            tableId
+            tableId,
+            deviceId,
+            (paymentStatus = "PAID")
           )) as unknown as OrderResponse;
           break;
         default:
@@ -226,9 +235,9 @@ const Checkout: React.FC = () => {
           />
           <PaymentMethod
             imgSrc="https://cdn-icons-png.freepik.com/512/2017/2017461.png"
-            label="Quét mã QR"
-            isSelected={selectedMethod === "QR"}
-            onChange={() => handleChange("QR")}
+            label="Quét mã QR - Chuyển khoản"
+            isSelected={selectedMethod === "QR - Transfer"}
+            onChange={() => handleChange("QR - Transfer")}
           />
           <PaymentMethod
             imgSrc="https://storelinhtinh.com/wp-content/uploads/2022/03/kisspng-paypal-logo-brand-font-payment-paypal-logo-icon-paypal-icon-logo-png-and-vecto-5b7f273e45e8a9.9067728615350597742864.png"
@@ -247,7 +256,7 @@ const Checkout: React.FC = () => {
           <PayPalButton amount={amount} onSuccess={handleCheckout} />
         ) : (
           <div>
-            {selectedMethod === "QR" && qrCode ? (
+            {selectedMethod === "QR - Transfer" && qrCode ? (
               <div className="flex flex-col items-center">
                 <QRCode value={qrCode} size={256} />
                 <p className="mt-4 text-center">Quét mã QR để thanh toán</p>
