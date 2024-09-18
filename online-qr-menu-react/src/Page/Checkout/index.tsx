@@ -149,8 +149,6 @@ const Checkout: React.FC = () => {
       let orderRes;
       let deviceId = localStorage.getItem("deviceId") ?? "";
 
-      let paymentStatus;
-
       switch (selectedMethod) {
         case "Cash":
           orderRes = (await API_ORDER(
@@ -159,7 +157,7 @@ const Checkout: React.FC = () => {
             shopId,
             tableId,
             deviceId,
-            (paymentStatus = "NOT PAID")
+            "NOT PAID"
           )) as unknown as OrderResponse;
           break;
         case "QR - Transfer":
@@ -169,7 +167,7 @@ const Checkout: React.FC = () => {
             shopId,
             tableId,
             deviceId,
-            (paymentStatus = "PAID")
+            "PAID"
           )) as unknown as OrderResponse;
           break;
         case "PayPal":
@@ -180,7 +178,7 @@ const Checkout: React.FC = () => {
             shopId,
             tableId,
             deviceId,
-            (paymentStatus = "PAID")
+            "PAID"
           )) as unknown as OrderResponse;
           break;
         default:
