@@ -40,7 +40,11 @@ const CartItem: React.FC<CartItemProps> = ({
       <div className="flex items-center justify-between border-b border-gray-200 pb-2 mb-2">
         <div className="text-xl font-semibold text-black">{productName}</div>
         <div className="text-base font-semibold text-black">
-          $ {price.toFixed(2)}
+          ${" "}
+          {price.toLocaleString("vi-VN", {
+            style: "currency",
+            currency: "VND",
+          })}
         </div>
       </div>
       <div className="flex flex-col mb-2">
@@ -50,7 +54,13 @@ const CartItem: React.FC<CartItemProps> = ({
             className="flex items-center justify-between text-gray-600 text-sm mb-1"
           >
             <div>
-              {option.option} {option.price > 0 ? ` - ${option.price}` : ""}
+              {option.option}{" "}
+              {option.price > 0
+                ? ` - ${option.price.toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  })}`
+                : ""}
             </div>
             <div className="flex items-center">
               <button

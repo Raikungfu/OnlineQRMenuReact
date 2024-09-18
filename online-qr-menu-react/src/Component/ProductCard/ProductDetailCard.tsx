@@ -80,7 +80,15 @@ const ProductDetailCard: React.FC<ProductCardProps> = ({
                         className="form-radio h-4 w-4 text-orange-500"
                       />
                       <span>{option}</span>
-                      <span>{price > 0 ? " - " + price : ""}</span>
+                      <span>
+                        {price > 0
+                          ? " - " +
+                            price.toLocaleString("vi-VN", {
+                              style: "currency",
+                              currency: "VND",
+                            })
+                          : ""}
+                      </span>
                     </label>
                   )
                 )}

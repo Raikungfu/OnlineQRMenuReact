@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import DoneIcon from "@mui/icons-material/Done";
+import CancelIcon from "@mui/icons-material/Cancel";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 const OrderDetail: React.FC = () => {
   const [order, setOrder] = useState<any>(null);
@@ -15,35 +17,42 @@ const OrderDetail: React.FC = () => {
   const steps = [
     {
       label: "Đặt hàng thành công",
-      icon: <CheckCircleIcon className="text-white-300" />,
+      icon: <CheckCircleOutlineIcon className="text-white-300" />,
     },
     {
-      label: "Chờ thanh toán",
+      label: "Chờ xác nhận",
+      icon: <HourglassEmptyIcon className="text-white-300" />,
+    },
+    {
+      label: "Đã xác nhận",
       icon: <AccessTimeIcon className="text-yellow-400" />,
     },
     {
-      label: "Thanh toán thành công",
+      label: "Đang xử lý",
       icon: <CreditCardIcon className="text-blue-600" />,
     },
     {
-      label: "Đã xác nhận",
+      label: "Đã chế biến",
       icon: <VerifiedIcon className="text-purple-600" />,
     },
-    { label: "Đã làm xong", icon: <DoneIcon className="text-white-300" /> },
+    { label: "Hoàn thành", icon: <DoneIcon className="text-white-300" /> },
+    { label: "Đã hủy", icon: <CancelIcon className="text-red-300" /> },
   ];
 
   const getCurrentStep = (status: string) => {
     switch (status) {
-      case "Ordered":
+      case "PENDING":
         return 1;
-      case "Pending":
+      case "CONFIRMED":
         return 2;
-      case "Paid":
+      case "PROCESSING":
         return 3;
-      case "Confirm":
+      case "PROCESSED":
         return 4;
-      case "Done":
+      case "COMPLETED":
         return 5;
+      case "CANCELLED":
+        return 6;
       default:
         return 0;
     }
@@ -123,7 +132,11 @@ const OrderDetail: React.FC = () => {
                   className="mb-4 flex justify-between"
                 >
                   <span className="text-black/50 text-base font-semibold font-['Inter']">
-                    {size.size} - {size.option} - {size.price}
+                    {size.size} - {size.option} -{" "}
+                    {size.price.toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
                   </span>
 
                   <div className="text-black/50 text-sm font-normal font-['Inter']">
@@ -155,7 +168,10 @@ const OrderDetail: React.FC = () => {
                 Tổng cộng
               </div>
               <div className="text-black font-semibold font-['Inter']">
-                {order.subtotal - order.discount}
+                {(order.subtotal - order.discount).toLocaleString("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                })}
               </div>
             </div>
           </div>
@@ -171,8 +187,12 @@ const OrderDetail: React.FC = () => {
                 <div className="flex flex-row gap-4  items-center">
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                      index < currentStep
+                      index < currentStep - 1
                         ? "bg-green-500 text-white"
+                        : "bg-gray-300 text-black"
+                    } ${
+                      index == currentStep - 1
+                        ? "bg-red-500 text-white"
                         : "bg-gray-300 text-black"
                     }`}
                   >
@@ -182,10 +202,12 @@ const OrderDetail: React.FC = () => {
                   <div className="text-sm font-semibold">{step.label}</div>
                 </div>
 
-                {index < steps.length && (
+                {index < steps.length - 1 && (
                   <div
                     className={`w-1 h-16 mx-2 ${
-                      index < currentStep ? "bg-green-500" : "bg-gray-300"
+                      index < currentStep - 1 ? "bg-green-500" : "bg-gray-300"
+                    } ${
+                      index == currentStep - 1 ? "bg-red-500" : "bg-gray-300"
                     }`}
                   />
                 )}

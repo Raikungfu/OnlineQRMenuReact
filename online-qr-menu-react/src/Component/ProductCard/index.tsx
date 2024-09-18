@@ -29,7 +29,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
     >
       <img className="w-full h-[70%] object-cover" src={imgSrc} alt={name} />
       <div className="p-2 h-[30%] flex flex-col justify-between">
-        <div className="text-black text-base font-medium">{price}</div>
+        <div className="text-black text-base font-medium">
+          {price.toLocaleString("vi-VN", {
+            style: "currency",
+            currency: "VND",
+          })}
+        </div>
         <div className="text-black text-sm font-medium overflow-hidden text-ellipsis whitespace-nowrap">
           {name}
         </div>

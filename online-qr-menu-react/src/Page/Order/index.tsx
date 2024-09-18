@@ -63,18 +63,29 @@ const OrderList: React.FC = () => {
                 <div className="mt-2 flex justify-between">
                   <div className="text-gray-600">Tạm tính</div>
                   <div className="font-semibold">
-                    {order.subtotal.toFixed(2)} VNĐ
+                    {order.subtotal.toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
                   </div>
                 </div>
                 <div className="flex justify-between">
                   <div className="text-gray-600">Giảm giá</div>
                   <div className="font-semibold">
-                    {order.discount.toFixed(2)} VNĐ
+                    {order.discount.toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
                   </div>
                 </div>
                 <div className="flex justify-between font-semibold mt-2">
                   <div>Tổng cộng</div>
-                  <div>{(order.subtotal - order.discount).toFixed(2)} VNĐ</div>
+                  <div>
+                    {(order.subtotal - order.discount).toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
+                  </div>
                 </div>
               </li>
             ))}
