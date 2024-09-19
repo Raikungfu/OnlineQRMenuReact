@@ -76,7 +76,7 @@ const ProductDetailCard: React.FC<ProductCardProps> = ({
                         type="radio"
                         name={`option-${groupId}`}
                         checked={isSelected}
-                        onChange={() => onIceSelect(groupId, optionId)}
+                        onClick={() => onIceSelect(groupId, optionId)}
                         className="form-radio h-4 w-4 text-orange-500"
                       />
                       <span>{option}</span>
