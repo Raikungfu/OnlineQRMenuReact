@@ -54,7 +54,9 @@ const ProductDetail: React.FC = () => {
               ...group,
               Customizations: group.Customizations.map((option) => ({
                 ...option,
-                isSelected: option.MenuItemCustomizationId === optionId,
+                isSelected:
+                  option.MenuItemCustomizationId === optionId &&
+                  !option.isSelected,
               })),
             };
           }

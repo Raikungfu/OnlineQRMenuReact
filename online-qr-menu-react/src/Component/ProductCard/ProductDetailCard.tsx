@@ -61,7 +61,7 @@ const ProductDetailCard: React.FC<ProductCardProps> = ({
           return (
             <div className="mt-4" key={groupId}>
               <h3 className="text-base font-semibold">{groupName}</h3>
-              <div className="grid grid-cols-2 gap-4 mt-2">
+              <div className="flex flex-wrap gap-4 mt-2">
                 {groupOptions.map(
                   ({ groupId, option, optionId, price, isSelected }) => (
                     <label
@@ -110,7 +110,7 @@ const ProductDetailCard: React.FC<ProductCardProps> = ({
           />
         </div>
 
-        <div className="flex items-center space-x-4 mt-4">
+        <div className="sticky flex items-center space-x-4 mt-4">
           <div className="flex items-center space-x-2">
             <button
               className="w-10 h-10 flex items-center justify-center border rounded-full"
