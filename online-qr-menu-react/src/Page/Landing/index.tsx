@@ -51,7 +51,7 @@ const Landing: React.FC = () => {
   return (
     <div className="relative flex justify-center items-center ">
       {visible && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-b from-[#fe562d] to-[#f58020] rounded-lg p-4 md:p-8">
+        <div className="fixed z-10 inset-0 flex items-center justify-center bg-gradient-to-b from-[#fe562d] to-[#f58020] rounded-lg p-4 md:p-8">
           <div className="flex flex-col justify-center items-center space-y-6 md:space-y-8 text-center">
             <Logo
               src={infoShop.Avatar}

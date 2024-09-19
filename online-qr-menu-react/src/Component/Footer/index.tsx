@@ -25,7 +25,7 @@ const Footer: React.FC<FooterProps> = ({ shopId, tableId }) => {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white shadow-lg p-2 flex items-center justify-center">
+    <div className="fixed z-10 bottom-0 left-0 right-0 bg-white shadow-lg p-2 flex items-center justify-center">
       <div className="flex items-center justify-between w-full max-w-screen-lg mx-4">
         <button
           className="w-10 h-10 flex items-center justify-center flex-shrink-0"
