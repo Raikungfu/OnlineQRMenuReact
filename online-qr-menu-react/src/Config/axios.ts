@@ -11,10 +11,7 @@ const api = axios.create({
 });
 
 const AxiosApi = {
-  get: async <T>(
-    url: string,
-    params?: T
-  ): Promise<AxiosApiResponse<T>> => {
+  get: async <T>(url: string, params?: T): Promise<AxiosApiResponse<T>> => {
     try {
       const response = await api.get<T>(url, { params });
       if (response.status === 200) {
@@ -30,10 +27,7 @@ const AxiosApi = {
     }
   },
 
-  post: async <T>(
-    url: string,
-    data: T
-  ): Promise<AxiosApiResponse<T>> => {
+  post: async <T>(url: string, data: T): Promise<AxiosApiResponse<T>> => {
     try {
       const response = await api.post<T>(url, data);
       if (response.status === 200) {
@@ -49,10 +43,7 @@ const AxiosApi = {
     }
   },
 
-  put: async <T>(
-    url: string,
-    data: T
-  ): Promise<AxiosApiResponse<T>> => {
+  put: async <T>(url: string, data: T): Promise<AxiosApiResponse<T>> => {
     try {
       const response = await api.put<T>(url, data);
       if (response.status === 200) {
@@ -68,10 +59,7 @@ const AxiosApi = {
     }
   },
 
-  patch: async <T>(
-    url: string,
-    data: T
-  ): Promise<AxiosApiResponse<T>> => {
+  patch: async <T>(url: string, data: T): Promise<AxiosApiResponse<T>> => {
     try {
       const response = await api.patch<T>(url, data);
       if (response.status === 200) {
@@ -87,9 +75,7 @@ const AxiosApi = {
     }
   },
 
-  delete: async <T>(
-    url: string,
-  ): Promise<AxiosApiResponse<T>> => {
+  delete: async <T>(url: string): Promise<AxiosApiResponse<T>> => {
     try {
       const response = await api.delete<T>(url);
       if (response.status === 200) {

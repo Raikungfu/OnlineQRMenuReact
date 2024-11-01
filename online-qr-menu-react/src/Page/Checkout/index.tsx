@@ -83,26 +83,22 @@ const Checkout: React.FC = () => {
   const generateQRCode = async (amount: number) => {
     try {
       setLoading(true);
-
+      console.log("Generating QR code for amount:", amount);
       const response = await axios.post(
         "https://api-merchant.payos.vn/v2/payment-requests",
         {
           orderCode: Date.now(),
           amount,
           description: "Thanh toán",
-          cancelUrl:
-            "https://onlineqrmenuapp20240813144713.azurewebsites.net/cancel",
-          returnUrl:
-            "https://onlineqrmenuapp20240813144713.azurewebsites.net/success",
+          cancelUrl: "https://online-qr-menu-app.azurewebsites.net/cancel",
+          returnUrl: "https://online-qr-menu-app.azurewebsites.net/success",
           expiredAt: Math.floor(Date.now() / 1000) + 60,
           signature: generateSignature({
             orderCode: Date.now(),
             amount,
             description: "Thanh toán",
-            cancelUrl:
-              "https://onlineqrmenuapp20240813144713.azurewebsites.net/cancel",
-            returnUrl:
-              "https://onlineqrmenuapp20240813144713.azurewebsites.net/success",
+            cancelUrl: "https://online-qr-menu-app.azurewebsites.net/cancel",
+            returnUrl: "https://online-qr-menu-app.azurewebsites.net/success",
           }),
         },
         {
