@@ -31,19 +31,19 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
 
   return (
     <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-10">
-      <div className="p-2 flex items-center justify-between mx-auto max-w-screen-lg">
-        <div className="flex space-x-4">
+      <div className="flex items-center justify-between mx-auto max-w-screen-lg">
+        <div className="flex space-x-2">
           {shopId &&
             location.pathname !== `/menu/shop/${shopId}/table/${tableId}` && (
               <button
                 onClick={handleBackClick}
-                className="p-2 text-white rounded-full"
+                className="text-white rounded-full"
               >
                 <BackIcon sx={{ fontSize: 24, color: "gray" }} />
               </button>
             )}
           <div
-            className="flex flex-row items-center cursor-pointer"
+            className="flex flex-row items-center cursor-pointer space-x-2"
             onClick={handleClickShopAbout}
           >
             <Logo
@@ -52,7 +52,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
               width="w-12"
               height="h-12"
             />
-            <div className="p-4 text-black text-xl font-medium">
+            <div className="px-2 text-black text-lg font-medium">
               {info?.Name} - Table: {tableId}
             </div>
           </div>

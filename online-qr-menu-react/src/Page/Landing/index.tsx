@@ -59,7 +59,7 @@ const Landing: React.FC = () => {
               width="w-48 md:w-64"
               height="h-48 md:h-64"
             />
-            <Title text={infoShop.Slogan} fontSize="text-lg md:text-xl" />
+            <Title text={infoShop.Slogan} fontSize="text-xl md:text-3xl" />
           </div>
         </div>
       )}
@@ -76,7 +76,7 @@ const Landing: React.FC = () => {
           </div>
         )}
         <NavigationBar shopId={shopId} tableId={tableId} info={infoShop} />
-        <div className="mx-auto px-4 overflow-x-hidden">
+        <div className="overflow-x-hidden">
           <div className="w-screen max-w-screen-sm mx-auto grid grid-cols-1 gap-4">
             <Outlet
               context={{ shopId, tableId, triggerNotification, infoShop }}
