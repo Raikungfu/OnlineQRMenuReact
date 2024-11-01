@@ -27,28 +27,28 @@ const OrderStatusComponent: React.FC<OrderStatusProps> = ({
       case "PENDING":
         setOrderId(orderId);
         triggerNotification(
-          `Order is being prepared, please wait.<br/>Payment method: ${paymentMethod}<br/>ID: ${orderId}, Date: ${convertDate(
+          `Order is being prepared, please wait.<br />Payment method: ${paymentMethod}<br />ID: ${orderId}, Date: ${convertDate(
             orderDate
           )}`
         );
         break;
       case "PREPARING":
         triggerNotification(
-          `Order is being prepared, please wait.<br/> Order ID: ${orderId}, Order Date: ${convertDate(
+          `Order is being prepared, please wait.<br />Order ID: ${orderId}, Order Date: ${convertDate(
             updateDate
           )}`
         );
         break;
       case "COMPLETED":
         triggerNotification(
-          `Order has been completed, enjoy your meal!.<br/> Order ID: ${orderId}, Order Date: ${convertDate(
+          `Order has been completed, enjoy your meal!<br />Order ID: ${orderId}, Order Date: ${convertDate(
             updateDate
           )}`
         );
         break;
       case "CANCELLED":
         triggerNotification(
-          `Order has been cancelled, please contact staff for more information.<br/> Order ID: ${orderId}, Order Date: ${convertDate(
+          `Order has been cancelled, please contact staff for more information.<br />Order ID: ${orderId}, Order Date: ${convertDate(
             updateDate
           )}`
         );
