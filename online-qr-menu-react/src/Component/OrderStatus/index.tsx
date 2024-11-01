@@ -26,33 +26,48 @@ const OrderStatusComponent: React.FC<OrderStatusProps> = ({
     switch (status) {
       case "PENDING":
         setOrderId(orderId);
-        const formattedDate = new Date(orderDate).toLocaleString("en-US", {
-          weekday: "short",
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        });
         triggerNotification(
-          `Order is being prepared, please wait.<br/> Order ID: ${orderId}, Order Date: ${formattedDate}`
+          `Order is being prepared, please wait.<br/>Payment method: ${paymentMethod}<br/>ID: ${orderId}, Date: ${convertDate(
+            orderDate
+          )}`
         );
         break;
       case "PREPARING":
-        triggerNotification(`Order is being prepared, please wait`);
+        triggerNotification(
+          `Order is being prepared, please wait.<br/> Order ID: ${orderId}, Order Date: ${convertDate(
+            updateDate
+          )}`
+        );
         break;
       case "COMPLETED":
-        triggerNotification(`Order has been completed, enjoy your meal!`);
+        triggerNotification(
+          `Order has been completed, enjoy your meal!.<br/> Order ID: ${orderId}, Order Date: ${convertDate(
+            updateDate
+          )}`
+        );
         break;
       case "CANCELLED":
         triggerNotification(
-          `Order has been cancelled, please contact staff for more information`
+          `Order has been cancelled, please contact staff for more information.<br/> Order ID: ${orderId}, Order Date: ${convertDate(
+            updateDate
+          )}`
         );
         break;
       default:
         break;
     }
+  };
+
+  const convertDate = (date: Date) => {
+    return new Date(date).toLocaleString("en-US", {
+      weekday: "short",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
   };
 
   const triggerNotification = (message: string) => {
