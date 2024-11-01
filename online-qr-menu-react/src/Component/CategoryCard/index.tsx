@@ -22,11 +22,11 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
     title={`${name}\n${description}`}
   >
     <img
-      className="w-full h-full object-cover object-center rounded-[20px]"
+      className="w-full h-3/4 object-cover object-center rounded-[20px]"
       src={imgSrc}
       alt={name}
     />
-    <div className="relative">
+    <div className="h-1/4 relative">
       <div className="text-black text-base font-medium p-1 rounded-md overflow-hidden text-ellipsis whitespace-nowrap">
         {name}
       </div>
