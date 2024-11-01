@@ -15,7 +15,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
   selectCategory,
 }) => (
   <div
-    className={`w-[20%] h-36 rounded-[20px] border overflow-hidden flex flex-col p-1 cursor-pointer ${
+    className={`w-[20%] h-[150px] rounded-[20px] border overflow-hidden flex flex-col p-1 cursor-pointer ${
       isSelected ? "bg-orange-200" : ""
     } hover:w-[25%]`}
     onClick={() => selectCategory()}
