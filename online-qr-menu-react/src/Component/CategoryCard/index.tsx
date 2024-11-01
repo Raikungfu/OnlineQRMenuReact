@@ -15,14 +15,14 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
   selectCategory,
 }) => (
   <div
-    className={`w-[20%] h-[100px] rounded-[20px] border overflow-hidden flex flex-col p-1 cursor-pointer ${
+    className={`w-[20%] h-[150px] rounded-[20px] border overflow-hidden flex flex-col p-1 cursor-pointer ${
       isSelected ? "bg-orange-200" : ""
     } hover:w-[25%]`}
     onClick={() => selectCategory()}
     title={`${name}\n${description}`}
   >
     <img
-      className="w-full h-full object-cover rounded-[20px]"
+      className="w-full h-full object-cover object-centerrounded-[20px]"
       src={imgSrc}
       alt={name}
     />
