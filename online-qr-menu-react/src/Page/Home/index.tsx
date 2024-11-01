@@ -122,7 +122,7 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-full sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden flex flex-col space-y-6 p-4">
+    <div className="w-full max-w-full sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden flex flex-col space-y-2 px-4">
       <div className="w-full flex flex-nowrap hidden-scroll-bar">
         <div className="flex space-x-4">
           {categories.map((category) => (
@@ -142,7 +142,7 @@ const Home: React.FC = () => {
 
       <SearchBar onSearchChange={handleSearchChange} />
 
-      <div className="mt-2 flex-grow">
+      <div className="flex-grow">
         <div className="grid grid-cols-2 gap-4">
           {products.map((product: Product) => (
             <ProductCard
