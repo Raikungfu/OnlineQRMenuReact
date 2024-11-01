@@ -30,7 +30,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-10">
+    <div className="p-2 fixed top-0 left-0 right-0 bg-white shadow-md z-10">
       <div className="flex items-center justify-between mx-auto max-w-screen-lg">
         <div className="flex space-x-2">
           {shopId &&
