@@ -99,9 +99,8 @@ const OrderStatusComponent: React.FC<OrderStatusProps> = ({
         <div
           className="fixed top-20 right-4 bg-orange-500 text-white p-2 rounded shadow cursor-pointer"
           onClick={handleClickNotification}
-        >
-          {notificationMessage}
-        </div>
+          dangerouslySetInnerHTML={{ __html: notificationMessage }}
+        />
       )}
     </>
   );
