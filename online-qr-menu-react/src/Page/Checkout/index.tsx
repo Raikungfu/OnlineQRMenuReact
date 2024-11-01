@@ -109,6 +109,9 @@ const Checkout: React.FC = () => {
         }
       );
 
+      console.log("QR code response:", import.meta.env.VITE_API_KEY);
+      console.log("QR code response:", import.meta.env.VITE_PAYOS_CLIENT_ID);
+
       const { data } = response;
       if (data.code === "00" && data.desc === "success") {
         setQrCode(data.data.qrCode);
