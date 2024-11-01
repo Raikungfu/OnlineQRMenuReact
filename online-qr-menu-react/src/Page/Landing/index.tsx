@@ -59,7 +59,7 @@ const Landing: React.FC = () => {
               width="w-48 md:w-64"
               height="h-48 md:h-64"
             />
-            <Title text={infoShop.Slogan} fontSize="text-xl md:text-3xl" />
+            <Title text={infoShop.Slogan} fontSize="text-lg md:text-xl" />
           </div>
         </div>
       )}
