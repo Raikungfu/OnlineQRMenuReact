@@ -4,7 +4,6 @@ interface CategoryCardProps {
   imgSrc: string;
   name: string;
   description?: string;
-  height: number;
   isSelected: boolean;
   selectCategory: () => {};
 }
@@ -12,12 +11,11 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
   imgSrc,
   name,
   description,
-  height,
   isSelected,
   selectCategory,
 }) => (
   <div
-    className={`w-[20%] h-[${height}px] rounded-[20px] border overflow-hidden flex flex-col p-1 cursor-pointer ${
+    className={`w-[20%] h-[100px] rounded-[20px] border overflow-hidden flex flex-col p-1 cursor-pointer ${
       isSelected ? "bg-orange-200" : ""
     } hover:w-[25%]`}
     onClick={() => selectCategory()}

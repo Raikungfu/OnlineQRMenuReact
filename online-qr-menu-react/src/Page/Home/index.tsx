@@ -131,7 +131,6 @@ const Home: React.FC = () => {
               imgSrc={category.Image}
               name={category.Name}
               description={category.Description}
-              height={100}
               isSelected={category.isSelected}
               selectCategory={() =>
                 selectCategory(category.CategoryId, category.isSelected)
