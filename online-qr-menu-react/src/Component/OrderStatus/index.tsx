@@ -20,12 +20,39 @@ const OrderStatusComponent: React.FC<OrderStatusProps> = ({
     orderId: number,
     status: string,
     updateDate: Date,
-    paymentMethod: string
+    paymentMethod: string,
+    orderDate: Date
   ) => {
-    setOrderId(orderId);
-    triggerNotification(
-      `Order ID: ${orderId}, Status: ${status} \nPayment method: ${updateDate}\n Time: ${paymentMethod}`
-    );
+    switch (status) {
+      case "PENDING":
+        setOrderId(orderId);
+        const formattedDate = new Date(orderDate).toLocaleString("en-US", {
+          weekday: "short",
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        });
+        triggerNotification(
+          `Order is being prepared, please wait.<br/> Order ID: ${orderId}, Order Date: ${formattedDate}`
+        );
+        break;
+      case "PREPARING":
+        triggerNotification(`Order is being prepared, please wait`);
+        break;
+      case "COMPLETED":
+        triggerNotification(`Order has been completed, enjoy your meal!`);
+        break;
+      case "CANCELLED":
+        triggerNotification(
+          `Order has been cancelled, please contact staff for more information`
+        );
+        break;
+      default:
+        break;
+    }
   };
 
   const triggerNotification = (message: string) => {
@@ -55,7 +82,7 @@ const OrderStatusComponent: React.FC<OrderStatusProps> = ({
     <>
       {showNotification && (
         <div
-          className="fixed top-20 right-4 bg-orange-500 text-white p-4 rounded shadow cursor-pointer"
+          className="fixed top-20 right-4 bg-orange-500 text-white p-2 rounded shadow cursor-pointer"
           onClick={handleClickNotification}
         >
           {notificationMessage}
