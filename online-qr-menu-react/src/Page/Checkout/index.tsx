@@ -90,15 +90,19 @@ const Checkout: React.FC = () => {
           orderCode: Date.now(),
           amount,
           description: "Thanh toán",
-          cancelUrl: "https://online-qr-menu-app.azurewebsites.net/cancel",
-          returnUrl: "https://online-qr-menu-app.azurewebsites.net/success",
-          expiredAt: Math.floor(Date.now() / 1000) + 60,
+          cancelUrl:
+            "https://online-qr-menu-app.azurewebsites.net/api/order/payment-cancel",
+          returnUrl:
+            "https://online-qr-menu-app.azurewebsites.net/api/order/payment-success",
+          expiredAt: Math.floor(Date.now() / 1000) + 600,
           signature: generateSignature({
             orderCode: Date.now(),
             amount,
             description: "Thanh toán",
-            cancelUrl: "https://online-qr-menu-app.azurewebsites.net/cancel",
-            returnUrl: "https://online-qr-menu-app.azurewebsites.net/success",
+            cancelUrl:
+              "https://online-qr-menu-app.azurewebsites.net/api/order/payment-cancel",
+            returnUrl:
+              "https://online-qr-menu-app.azurewebsites.net/api/order/payment-success",
           }),
         },
         {
